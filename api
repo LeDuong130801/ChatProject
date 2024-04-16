@@ -1,0 +1,6 @@
+create empoloyee
+url: localhost:8080/api/employee/create
+method: POST
+data: {
+""
+}

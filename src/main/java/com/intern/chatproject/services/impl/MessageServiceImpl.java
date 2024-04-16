@@ -64,7 +64,12 @@ public class MessageServiceImpl implements MessageService {
 
     @Override
     public List<MessageEntityDto> getMessageFromChatBox(String chatBoxId) {
-        return messageRepositoryJpa.getMessageEntitiesByChatBoxId(chatBoxId);
+        return messageRepositoryJpa.getMessageEntityDtoByChatBoxId(chatBoxId);
+    }
+
+    @Override
+    public List<MessageEntityDto> getMessageByUserAccountId(String userAccountId) {
+        return messageRepositoryJpa.getMessageEntityDtoByUserAccountId(userAccountId);
     }
 
     private String generatorRandom() {

@@ -6,4 +6,5 @@ public interface UserAccountService {
     Object create(UserAccountDto dto);
     Object edit(UserAccountDto dto);
     Object changePassword(UserAccountDto dto);
+    Object login(UserAccountDto dto);
 }

@@ -8,4 +8,5 @@ public interface MessageService {
     Object send(MessageEntityDto dto);
     Object seen(String messageId);
     List<MessageEntityDto> getMessageFromChatBox(String chatBoxId);
+    List<MessageEntityDto> getMessageByUserAccountId(String userAccountId);
 }

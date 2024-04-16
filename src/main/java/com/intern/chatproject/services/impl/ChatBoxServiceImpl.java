@@ -4,6 +4,7 @@ import com.intern.chatproject.dto.ChatBoxEntityDto;
 import com.intern.chatproject.entities.ChatBoxEntity;
 import com.intern.chatproject.repositories.jpa.ChatBoxRepositoryJpa;
 import com.intern.chatproject.services.ChatBoxService;
+import com.intern.chatproject.utils.Constrants;
 import com.intern.chatproject.utils.Util;
 import com.intern.chatproject.utils.exception.CustomException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,7 @@ public class ChatBoxServiceImpl implements ChatBoxService {
                 .userAccountId(userAccountId)
                 .employeeId(Util.employeeSaleId())
                 .lastChatTime(System.currentTimeMillis())
+                .status(Constrants.STATUS.ACTIVE)
                 .build();
         return chatBoxRepositoryJpa.save(entity);
     }
@@ -40,6 +42,7 @@ public class ChatBoxServiceImpl implements ChatBoxService {
                     .userAccountId(dto.getChatBoxName())
                     .employeeId(Util.employeeSaleId())
                     .lastChatTime(System.currentTimeMillis())
+                    .status(dto.getStatus())
                     .build();
             return chatBoxRepositoryJpa.save(entity);
         }
