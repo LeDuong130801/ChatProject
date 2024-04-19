@@ -11,9 +11,9 @@ import lombok.experimental.FieldDefaults;
 public class MessageEntityDto {
     String messageId;
     String messageContent;
-    Short messageType;
-    Long sendTime;
-    Short status;
+    Short  messageType;
+    Long   sendTime;
+    Short  status;
     String chatBoxId;
 
     String senderId;

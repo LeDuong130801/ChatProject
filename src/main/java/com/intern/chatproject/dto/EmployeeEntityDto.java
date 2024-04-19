@@ -18,15 +18,9 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class EmployeeEntityDto implements Serializable {
     String employeeId;
-    String employeeFullname;
-    @NotBlank
-    @Length( min = 10, max = 10)
+    String employeeName;
     String phoneNumber;
-    @NotBlank
-    @Length( min = 8, max = 15)
     String username;
-    @NotBlank
-    @Length(min = 8)
     String password;
     Short status;
     String createBy;
@@ -50,7 +44,7 @@ public class EmployeeEntityDto implements Serializable {
     public static EmployeeEntityDto parseEntity(EmployeeEntity entity){
         EmployeeEntityDto dto = EmployeeEntityDto.builder()
                 .employeeId(entity.getEmployeeId())
-                .employeeFullname(entity.getEmployeeFullname())
+                .employeeName(entity.getEmployeeName())
                 .phoneNumber(entity.getPhoneNumber())
                 .username(entity.getUsername())
                 .password(entity.getPassword())
@@ -64,9 +58,9 @@ public class EmployeeEntityDto implements Serializable {
         return dto;
     }
 
-    public EmployeeEntityDto(String employeeId, String employeeFullname, String phoneNumber, String username, String password, Short status, String createBy, Long createTime, String updateBy, Long updateTime) {
+    public EmployeeEntityDto(String employeeId, String employeeName, String phoneNumber, String username, String password, Short status, String createBy, Long createTime, String updateBy, Long updateTime, String role) {
         this.employeeId = employeeId;
-        this.employeeFullname = employeeFullname;
+        this.employeeName = employeeName;
         this.phoneNumber = phoneNumber;
         this.username = username;
         this.password = password;
@@ -75,20 +69,25 @@ public class EmployeeEntityDto implements Serializable {
         this.createTime = createTime;
         this.updateBy = updateBy;
         this.updateTime = updateTime;
-    }
-    public EmployeeEntityDto(String employeeId, String employeeFullname, String phoneNumber, String username, String password, Short status, String createBy, Long createTime, String updateBy, Long updateTime, List<RoleEntityDto> roleEntityDtoList) {
-        this.employeeId = employeeId;
-        this.employeeFullname = employeeFullname;
-        this.phoneNumber = phoneNumber;
-        this.username = username;
-        this.password = password;
-        this.status = status;
-        this.createBy = createBy;
-        this.createTime = createTime;
-        this.updateBy = updateBy;
-        this.updateTime = updateTime;
-        this.roleEntityDtoList = roleEntityDtoList;
+        this.role = role;
     }
 
+    public EmployeeEntityDto(String employeeId, String employeeName, String phoneNumber, String username, String password, Short status, List<RoleEntityDto> roleEntityDtoList) {
+        this.employeeId = employeeId;
+        this.employeeName = employeeName;
+        this.phoneNumber = phoneNumber;
+        this.username = username;
+        this.password = password;
+        this.status = status;
+        this.roleEntityDtoList = roleEntityDtoList;
+    }
+    public EmployeeEntityDto(String employeeId, String employeeName, String phoneNumber, String username, String password, Short status) {
+        this.employeeId = employeeId;
+        this.employeeName = employeeName;
+        this.phoneNumber = phoneNumber;
+        this.username = username;
+        this.password = password;
+        this.status = status;
+    }
 }
 

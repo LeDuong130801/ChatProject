@@ -1,6 +1,7 @@
 package com.intern.chatproject.controllers;
 
 
+import com.intern.chatproject.dto.ChatBoxEntityDto;
 import com.intern.chatproject.services.impl.ChatBoxServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -13,8 +14,16 @@ public class ChatBoxController {
     ChatBoxServiceImpl chatBoxService;
 
     @PostMapping("/create")
-    Object create(String userAccountId){
+    Object create(@RequestParam("user_account_id") String userAccountId){
         return chatBoxService.create(userAccountId);
+    }
+    @PostMapping("/customer/get")
+    Object getChatBoxOfCustomer(@RequestBody ChatBoxEntityDto dto){
+        return chatBoxService.getChatBoxOfCustomer(dto.getCustomerId());
+    }
+    @PostMapping("/employee/get")
+    Object getChatBoxOfEmployee(@RequestBody ChatBoxEntityDto dto){
+        return chatBoxService.getChatBoxOfEmployee(dto.getEmployeeId());
     }
 
 }

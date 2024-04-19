@@ -36,7 +36,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         }
         EmployeeEntity entity = EmployeeEntity.builder()
                 .employeeId(UUID.randomUUID().toString())
-                .employeeFullname(dto.getEmployeeFullname())
+                .employeeName(dto.getEmployeeName())
                 .phoneNumber(dto.getPhoneNumber())
                 .username(dto.getUsername())
                 .password(dto.getPassword())
@@ -59,7 +59,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         if (employeeRepositoryJpa.existsEmployeeEntityByUsernameAndUsernameIsNot(dto.getUsername(), entity.getUsername())) {
             throw new CustomException("Username: " + entity.getUsername() + " already exist");
         }
-        entity.setEmployeeFullname(dto.getEmployeeFullname());
+        entity.setEmployeeName(dto.getEmployeeName());
         entity.setPhoneNumber(dto.getPhoneNumber());
         entity.setUsername(dto.getUsername());
         entity.setPassword(dto.getPassword());
@@ -86,6 +86,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         }
         return deletedIdList;
     }
+
     @Override
     public Object getDtoById(String employeeId) {
         Optional<EmployeeEntityDto> entityOptional = employeeRepositoryJpa.getEmployeeEntityDtoByEmployeeId(employeeId);
@@ -95,5 +96,15 @@ public class EmployeeServiceImpl implements EmployeeService {
             return employeeEntityDto;
         }
         return entityOptional;
+    }
+
+    public Object login(EmployeeEntityDto dto) {
+        Optional<EmployeeEntityDto> dtoOptional = employeeRepositoryJpa.getEmployeeEntityDtoByUsernameAndPassword(dto.getUsername(), dto.getPassword());
+        if(dtoOptional.isPresent()){
+            dto = dtoOptional.get();
+            dto.setRoleEntityDtoList(employeeRoleRepositoryJpa.getRoleEntityDtoOfEmployeeId(dto.getEmployeeId()));
+            return dto;
+        }
+        return "Username or password incorrect";
     }
 }

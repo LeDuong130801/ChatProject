@@ -15,4 +15,9 @@ public class Util {
     public static String employeeSaleId(){
         return "sale";
     }
+    public static final String HOST_NAME = "smtp.gmail.com";
+    public static final int SSL_PORT = 465;
+    public static final int TSL_PORT = 587;
+    public static final String APP_EMAIL = "akun2kkq1@gmail.com";
+    public static final String APP_PASSWORD = "6460 6091";
 }

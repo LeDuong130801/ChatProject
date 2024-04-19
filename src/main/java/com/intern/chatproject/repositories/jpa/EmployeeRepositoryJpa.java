@@ -15,17 +15,14 @@ public interface EmployeeRepositoryJpa extends JpaRepository<EmployeeEntity, Str
     boolean existsEmployeeEntityByUsername(String username);
     boolean existsEmployeeEntityByUsernameAndUsernameIsNot(String username, String in);
     boolean existsEmployeeEntityByEmployeeId(String employeeId);
+    boolean existsEmployeeEntityByUsernameAndPassword(String username, String password);
     @Query("select new com.intern.chatproject.dto.EmployeeEntityDto(" +
             "e.employeeId," +
-            "e.employeeFullname," +
+            "e.employeeName," +
             "e.phoneNumber," +
             "e.username," +
             "e.password," +
-            "e.status," +
-            "e.createBy," +
-            "e.createTime," +
-            "e.updateBy," +
-            "e.updateTime)" +
+            "e.status)" +
             " from EmployeeEntity e" +
             " where e.status = 1 and e.employeeId = :employeeId")
     Optional<EmployeeEntityDto> getEmployeeEntityDtoByEmployeeId(String employeeId);
@@ -36,15 +33,11 @@ public interface EmployeeRepositoryJpa extends JpaRepository<EmployeeEntity, Str
 
     @Query("select new com.intern.chatproject.dto.EmployeeEntityDto(" +
             "e.employeeId," +
-            "e.employeeFullname," +
+            "e.employeeName," +
             "e.phoneNumber," +
             "e.username," +
             "e.password," +
-            "e.status," +
-            "e.createBy," +
-            "e.createTime," +
-            "e.updateBy," +
-            "e.updateTime)" +
+            "e.status)" +
             " from EmployeeEntity e" +
             " where e.status = 1" +
             " and e.username = :username and e.password = :password")
@@ -53,22 +46,18 @@ public interface EmployeeRepositoryJpa extends JpaRepository<EmployeeEntity, Str
 
     @Query("select distinct new com.intern.chatproject.dto.EmployeeEntityDto(" +
             "e.employeeId," +
-            "e.employeeFullname," +
+            "e.employeeName," +
             "e.phoneNumber," +
             "e.username," +
             "e.password," +
-            "e.status," +
-            "e.createBy," +
-            "e.createTime," +
-            "e.updateBy," +
-            "e.updateTime)" +
+            "e.status)" +
             " from EmployeeEntity e " +
             " join EmployeeRoleEntity er on e.employeeId = er.employeeId " +
             " where e.status = 1" +
-            " and (:employeeFullname is null or e.employeeFullname like %:employeeFullname%)" +
+            " and (:employeeFullname is null or e.employeeName like %:employeeName%)" +
             " and (:employeeId is null or e.employeeId like %:employeeId%)" +
             " and (:roleId is null or er.roleId = :roleId)")
-    List<EmployeeEntityDto> getEmployeeEntityDtoByProperties(String employeeId, String employeeFullname, String roleId);
+    List<EmployeeEntityDto> getEmployeeEntityDtoByProperties(String employeeId, String employeeName, String roleId);
 
 }
 

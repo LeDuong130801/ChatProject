@@ -18,17 +18,15 @@ public class ChatBoxServiceImpl implements ChatBoxService {
     ChatBoxRepositoryJpa chatBoxRepositoryJpa;
 
     @Override
-    public Object create(String userAccountId) {
-        if (chatBoxRepositoryJpa.existsChatBoxEntityDtoByUserAccountId(userAccountId)){
-            return chatBoxRepositoryJpa.getChatBoxEntityDtoByUserAccountId(userAccountId);
+    public Object create(String customerId) {
+        if (chatBoxRepositoryJpa.existsChatBoxEntityByCustomerId(customerId)){
+            return chatBoxRepositoryJpa.getChatBoxEntityDtoByCustomerId(customerId);
         }
         ChatBoxEntity entity = ChatBoxEntity.builder()
                 .chatBoxId(UUID.randomUUID().toString())
-                .chatBoxName(userAccountId)
-                .userAccountId(userAccountId)
+                .chatBoxName(customerId)
+                .customerId(customerId)
                 .employeeId(Util.employeeSaleId())
-                .lastChatTime(System.currentTimeMillis())
-                .status(Constrants.STATUS.ACTIVE)
                 .build();
         return chatBoxRepositoryJpa.save(entity);
     }
@@ -38,14 +36,18 @@ public class ChatBoxServiceImpl implements ChatBoxService {
         if (chatBoxRepositoryJpa.existsChatBoxEntityByChatBoxId(dto.getChatBoxId())){
             ChatBoxEntity entity = ChatBoxEntity.builder()
                     .chatBoxId(UUID.randomUUID().toString())
-                    .chatBoxName(dto.getUserAccountId())
-                    .userAccountId(dto.getChatBoxName())
+                    .chatBoxName(dto.getCustomerName())
+                    .customerId(dto.getChatBoxName())
                     .employeeId(Util.employeeSaleId())
-                    .lastChatTime(System.currentTimeMillis())
-                    .status(dto.getStatus())
                     .build();
             return chatBoxRepositoryJpa.save(entity);
         }
         throw new CustomException("No chat box id: "+dto.getChatBoxId());
+    }
+    public Object getChatBoxOfCustomer(String customerId){
+        return chatBoxRepositoryJpa.getChatBoxEntityDtoByCustomerId(customerId);
+    }
+    public Object getChatBoxOfEmployee(String employeeId){
+        return chatBoxRepositoryJpa.getChatBoxEntityDtoByEmployeeId(employeeId);
     }
 }

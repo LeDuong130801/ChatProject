@@ -16,4 +16,8 @@ public class RoleController {
     public Object createRole(@RequestBody RoleEntityDto dto){
         return roleService.create(dto);
     }
+    @GetMapping(value = "/get")
+    public Object get(@RequestParam("role_id")String roleId){
+        return roleService.getById(roleId);
+    }
 }

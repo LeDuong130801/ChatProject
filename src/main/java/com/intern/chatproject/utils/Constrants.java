@@ -9,6 +9,8 @@ public class Constrants {
     public interface STATUS{
         Short ACTIVE = 1;
         Short INACTIVE = 0;
+        Short ONLINE = 1;
+        Short OFFLINE = 0;
     }
 
     public interface MESSAGE_TYPE{

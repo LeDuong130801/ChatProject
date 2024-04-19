@@ -4,8 +4,10 @@ import com.intern.chatproject.dto.MessageEntityDto;
 import com.intern.chatproject.entities.MessageEntity;
 import com.intern.chatproject.services.MessageService;
 import com.intern.chatproject.services.impl.MessageServiceImpl;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
@@ -15,9 +17,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Slf4j
 @CrossOrigin
 @RestController
-@RequestMapping("/wsc")
 public class MessageController {
 
     @Autowired
@@ -25,12 +27,13 @@ public class MessageController {
     @Autowired
     SimpMessagingTemplate messagingTemplate;
 
-    @MessageMapping("/send")
-    public void sendMessage(@Payload MessageEntityDto dto) {
-        MessageEntityDto savedMsg = (MessageEntityDto) messageService.send(dto);
-        messagingTemplate.convertAndSendToUser(
-                dto.getChatBoxId(), "/queue/messages",
-                savedMsg
+    @MessageMapping("/chat/{to}")
+    public void sendMessage(@DestinationVariable String to, MessageEntityDto dto) {
+        log.info(to);
+        log.info("vaoroi");
+        MessageEntity savedMsg = (MessageEntity) messageService.send(dto);
+        messagingTemplate.convertAndSend(
+                "/topic/messages/"+to, savedMsg
         );
     }
 

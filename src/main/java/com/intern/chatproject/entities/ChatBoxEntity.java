@@ -20,13 +20,10 @@ public class ChatBoxEntity {
     String chatBoxId;
     @Column(name = "chat_box_name")
     String chatBoxName;
-    @Column(name = "user_account_id")
-    String userAccountId;
+    @Column(name = "customer_id")
+    String customerId;
     @Column(name = "employee_id")
     String employeeId;
-    @Column(name = "last_chat_time")
-    Long lastChatTime;
-    @Column(name = "status")
-    Short status;
-
+    @Column(name = "allow_guest")
+    Short allowGuest;
 }

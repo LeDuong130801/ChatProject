@@ -30,4 +30,9 @@ public class EmployeeController {
     public Object delete(@RequestBody List<String> employeeIdList){
         return employeeService.delete(employeeIdList);
     }
+    @PostMapping(value = "/login-process")
+    public Object login(@RequestBody EmployeeEntityDto dto){
+        return employeeService.login(dto);
+    }
+
 }

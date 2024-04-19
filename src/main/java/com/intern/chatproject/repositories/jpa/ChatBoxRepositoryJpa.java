@@ -12,52 +12,41 @@ import java.util.Optional;
 @Repository
 public interface ChatBoxRepositoryJpa extends JpaRepository<ChatBoxEntity, String> {
     boolean existsChatBoxEntityByChatBoxId(String chatBoxId);
-    boolean existsChatBoxEntityByChatBoxIdAndUserAccountId(String chatBoxId, String userAccountId);
+    boolean existsChatBoxEntityByChatBoxIdAndCustomerId(String chatBoxId, String customerId);
+    boolean existsChatBoxEntityByCustomerId(String customerId);
     boolean existsChatBoxEntityByChatBoxIdAndEmployeeId(String chatBoxId, String employeeId);
-
-    @Query("SELECT CASE WHEN COUNT(cb) > 0 THEN true ELSE false END from ChatBoxEntity cb WHERE cb.userAccountId = :userAccountId")
-    boolean existsChatBoxEntityDtoByUserAccountId(String userAccountId);
 
     @Query("select new com.intern.chatproject.dto.ChatBoxEntityDto(" +
             "cb.chatBoxId," +
             "cb.chatBoxName," +
-            "cb.userAccountId," +
+            "cb.customerId," +
             "cb.employeeId," +
-            "cb.lastChatTime," +
-            "cb.status," +
-            "ua.userAccountName," +
-            "e.employeeFullname) " +
+            "cb.allowGuest) " +
             "from ChatBoxEntity cb " +
             "join EmployeeEntity e on cb.employeeId = e.employeeId " +
-            "join UserAccountEntity ua on cb.userAccountId = ua.userAccountId " +
+            "join CustomerEntity ua on cb.customerId = ua.customerId " +
             "where cb.employeeId = :employeeId")
     List<ChatBoxEntityDto> getChatBoxEntityDtoByEmployeeId(String employeeId);
     @Query("select new com.intern.chatproject.dto.ChatBoxEntityDto(" +
             "cb.chatBoxId," +
             "cb.chatBoxName," +
-            "cb.userAccountId," +
+            "cb.customerId," +
             "cb.employeeId," +
-            "cb.lastChatTime," +
-            "cb.status," +
-            "ua.userAccountName," +
-            "e.employeeFullname) " +
+            "cb.allowGuest) " +
             "from ChatBoxEntity cb " +
             "join EmployeeEntity e on cb.employeeId = e.employeeId " +
-            "join UserAccountEntity ua on cb.userAccountId = ua.userAccountId " +
+            "join CustomerEntity ua on cb.customerId = ua.customerId " +
             "where cb.chatBoxId = :chatBoxId")
     Optional<ChatBoxEntityDto> getChatBoxEntityDtoByChatBoxId(String chatBoxId);
     @Query("select new com.intern.chatproject.dto.ChatBoxEntityDto(" +
             "cb.chatBoxId," +
             "cb.chatBoxName," +
-            "cb.userAccountId," +
+            "cb.customerId," +
             "cb.employeeId," +
-            "cb.lastChatTime," +
-            "cb.status," +
-            "ua.userAccountName," +
-            "e.employeeFullname) " +
+            "cb.allowGuest) " +
             "from ChatBoxEntity cb " +
             "join EmployeeEntity e on cb.employeeId = e.employeeId " +
-            "join UserAccountEntity ua on cb.userAccountId = ua.userAccountId " +
-            "where ua.userAccountId = :userAccountId")
-    Optional<ChatBoxEntityDto> getChatBoxEntityDtoByUserAccountId(String userAccountId);
+            "join CustomerEntity ua on cb.customerId = ua.customerId " +
+            "where ua.customerId = :customerId")
+    Optional<ChatBoxEntityDto> getChatBoxEntityDtoByCustomerId(String customerId);
 }

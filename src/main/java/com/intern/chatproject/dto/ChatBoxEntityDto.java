@@ -17,32 +17,29 @@ import java.util.List;
 public class ChatBoxEntityDto {
     String chatBoxId;
     String chatBoxName;
-    String userAccountId;
+    String customerId;
     String employeeId;
-    Long lastChatTime;
-    Short status;
+    Short allowGuest;
 
-    String userAccountName;
+    String customerName;
     String employeeName;
     List<MessageEntity> messageList;
 
-    public ChatBoxEntityDto(String chatBoxId, String chatBoxName, String userAccountId, String employeeId, Long lastChatTime, Short status) {
+    public ChatBoxEntityDto(String chatBoxId, String chatBoxName, String customerId, String employeeId, Short allowGuest) {
         this.chatBoxId = chatBoxId;
         this.chatBoxName = chatBoxName;
-        this.userAccountId = userAccountId;
+        this.customerId = customerId;
         this.employeeId = employeeId;
-        this.lastChatTime = lastChatTime;
-        this.status = status;
+        this.allowGuest = allowGuest;
     }
 
-    public ChatBoxEntityDto(String chatBoxId, String chatBoxName, String userAccountId, String employeeId, Long lastChatTime, Short status, String userAccountName, String employeeName) {
+    public ChatBoxEntityDto(String chatBoxId, String chatBoxName, String customerId, String employeeId, Short allowGuest, String customerName, String employeeName) {
         this.chatBoxId = chatBoxId;
         this.chatBoxName = chatBoxName;
-        this.userAccountId = userAccountId;
+        this.customerId = customerId;
         this.employeeId = employeeId;
-        this.lastChatTime = lastChatTime;
-        this.status = status;
-        this.userAccountName = userAccountName;
+        this.allowGuest = allowGuest;
+        this.customerName = customerName;
         this.employeeName = employeeName;
     }
 }

@@ -15,7 +15,7 @@ public class EmployeeRoleEntityDto {
     String employeeId;
     String roleId;
 
-    String employeeFullname;
+    String employeeName;
     String phoneNumber;
     String username;
     String password;
@@ -43,7 +43,7 @@ public class EmployeeRoleEntityDto {
         this.employeeRoleId = employeeRoleId;
         this.employeeId = employeeId;
         this.roleId = roleId;
-        this.employeeFullname = employeeFullname;
+        this.employeeName = employeeFullname;
         this.phoneNumber = phoneNumber;
         this.username = username;
         this.password = password;

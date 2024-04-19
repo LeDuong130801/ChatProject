@@ -32,8 +32,8 @@ public interface MessageRepositoryJpa extends JpaRepository<MessageEntity, Strin
             "m.chatBoxId) " +
             "from MessageEntity m " +
             "join ChatBoxEntity cb on cb.chatBoxId = m.chatBoxId " +
-            "where cb.userAccountId = :userAccountId order by m.sendTime desc")
-    List<MessageEntityDto> getMessageEntityDtoByUserAccountId(String userAccountId);
+            "where cb.customerId = :customerId order by m.sendTime desc")
+    List<MessageEntityDto> getMessageEntityDtoByCustomerId(String customerId);
 
     boolean existsMessageEntityByMessageId(String messageId);
     Optional<MessageEntity> getMessageEntityByMessageId(String messageId);

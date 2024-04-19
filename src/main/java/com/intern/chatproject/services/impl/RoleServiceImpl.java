@@ -44,4 +44,8 @@ public class RoleServiceImpl implements RoleService {
     public List<String> delete(List<String> roleIdList) {
         return null;
     }
+
+    public Object getById(String roleId){
+        return roleRepositoryJpa.getRoleEntityDtoByRoleId(roleId);
+    }
 }

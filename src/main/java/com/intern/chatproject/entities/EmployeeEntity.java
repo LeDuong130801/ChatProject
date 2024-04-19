@@ -16,14 +16,16 @@ public class EmployeeEntity {
     @Basic(optional = false)
     @Column(name = "employee_id")
     String employeeId;
-    @Column(name = "employee_fullname")
-    String employeeFullname;
+    @Column(name = "employee_name")
+    String employeeName;
     @Column(name = "phone_number")
     String phoneNumber;
     @Column(name = "username")
     String username;
     @Column(name = "password")
     String password;
+    @Column(name = "email")
+    String email;
     @Column(name = "status")
     Short status;
     @Column(name = "create_by")

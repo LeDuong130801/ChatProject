@@ -1,0 +1,31 @@
+package com.intern.chatproject.dto;
+
+import jakarta.persistence.Column;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
+
+import java.util.List;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@FieldDefaults(level = AccessLevel.PRIVATE)
+public class CustomerEntityDto {
+    String customerId;
+    String customerName;
+    String oauthKey;
+    String oauthToken;
+    Short source;
+    String phoneNumber;
+    Short isOnline;
+
+    public CustomerEntityDto(String customerId, String customerName, String oauthKey, String oauthToken, Short source, String phoneNumber) {
+        this.customerId = customerId;
+        this.customerName = customerName;
+        this.oauthKey = oauthKey;
+        this.oauthToken = oauthToken;
+        this.source = source;
+        this.phoneNumber = phoneNumber;
+    }
+}

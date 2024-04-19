@@ -24,7 +24,7 @@ public class MessageServiceImpl implements MessageService {
     @Override
     public Object send(MessageEntityDto dto) {
         if (dto.getMessageType().equals(Constrants.MESSAGE_TYPE.CUSTOMER_SEND)
-                && chatBoxRepositoryJpa.existsChatBoxEntityByChatBoxIdAndUserAccountId(dto.getChatBoxId(), dto.getSenderId())) {
+                && chatBoxRepositoryJpa.existsChatBoxEntityByChatBoxIdAndCustomerId(dto.getChatBoxId(), dto.getSenderId())) {
             Long currentTime = System.currentTimeMillis();
             MessageEntity entity = MessageEntity.builder()
                     .chatBoxId(dto.getChatBoxId())
@@ -68,8 +68,8 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public List<MessageEntityDto> getMessageByUserAccountId(String userAccountId) {
-        return messageRepositoryJpa.getMessageEntityDtoByUserAccountId(userAccountId);
+    public List<MessageEntityDto> getMessageByCustomerId(String customerId) {
+        return messageRepositoryJpa.getMessageEntityDtoByCustomerId(customerId);
     }
 
     private String generatorRandom() {

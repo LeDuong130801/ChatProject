@@ -18,7 +18,7 @@ public interface EmployeeRoleRepositoryJpa extends JpaRepository<EmployeeRoleEnt
             "er.employeeRoleId," +
             "er.employeeId," +
             "er.roleId," +
-            "e.employeeFullname," +
+            "e.employeeName," +
             "e.phoneNumber," +
             "e.username," +
             "e.password," +
@@ -32,7 +32,7 @@ public interface EmployeeRoleRepositoryJpa extends JpaRepository<EmployeeRoleEnt
             "er.employeeRoleId," +
             "er.employeeId," +
             "er.roleId," +
-            "e.employeeFullname," +
+            "e.employeeName," +
             "e.phoneNumber," +
             "e.username," +
             "e.password," +
@@ -49,7 +49,7 @@ public interface EmployeeRoleRepositoryJpa extends JpaRepository<EmployeeRoleEnt
             "er.employeeRoleId," +
             "er.employeeId," +
             "er.roleId," +
-            "e.employeeFullname," +
+            "e.employeeName," +
             "e.phoneNumber," +
             "e.username," +
             "e.password," +
@@ -66,7 +66,7 @@ public interface EmployeeRoleRepositoryJpa extends JpaRepository<EmployeeRoleEnt
             "er.employeeRoleId," +
             "er.employeeId," +
             "er.roleId," +
-            "e.employeeFullname," +
+            "e.employeeName," +
             "e.phoneNumber," +
             "e.username," +
             "e.password," +
