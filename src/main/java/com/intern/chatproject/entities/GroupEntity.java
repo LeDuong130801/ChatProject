@@ -6,6 +6,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.springframework.stereotype.Component;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -13,17 +14,15 @@ import lombok.experimental.FieldDefaults;
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Builder
-@Table(name = "chat_box")
-public class ChatBoxEntity {
+@Table(name = "group_web")
+public class GroupEntity {
     @Id
-    @Column(name = "chat_box_id")
-    String chatBoxId;
-    @Column(name = "chat_box_name")
-    String chatBoxName;
-    @Column(name = "customer_id")
-    String customerId;
-    @Column(name = "employee_id")
-    String employeeId;
-    @Column(name = "website_id")
-    String websiteId;
+    @Column(name = "group_id")
+    String groupId;
+    @Column(name = "group_name")
+    String groupName;
+//    @Column(name = "renter_id")
+//    String renterId;
+    @Column(name = "allow_guest")
+    Short allowGuest;
 }

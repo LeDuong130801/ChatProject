@@ -22,6 +22,7 @@ public class EmployeeEntityDto implements Serializable {
     String phoneNumber;
     String username;
     String password;
+    String email;
     Short status;
     String createBy;
     Long createTime;
@@ -81,12 +82,13 @@ public class EmployeeEntityDto implements Serializable {
         this.status = status;
         this.roleEntityDtoList = roleEntityDtoList;
     }
-    public EmployeeEntityDto(String employeeId, String employeeName, String phoneNumber, String username, String password, Short status) {
+    public EmployeeEntityDto(String employeeId, String employeeName, String phoneNumber, String username, String password, String email, Short status) {
         this.employeeId = employeeId;
         this.employeeName = employeeName;
         this.phoneNumber = phoneNumber;
         this.username = username;
         this.password = password;
+        this.email = email;
         this.status = status;
     }
 }

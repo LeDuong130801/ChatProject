@@ -22,6 +22,7 @@ public interface EmployeeRepositoryJpa extends JpaRepository<EmployeeEntity, Str
             "e.phoneNumber," +
             "e.username," +
             "e.password," +
+            "e.email," +
             "e.status)" +
             " from EmployeeEntity e" +
             " where e.status = 1 and e.employeeId = :employeeId")
@@ -37,6 +38,7 @@ public interface EmployeeRepositoryJpa extends JpaRepository<EmployeeEntity, Str
             "e.phoneNumber," +
             "e.username," +
             "e.password," +
+            "e.email," +
             "e.status)" +
             " from EmployeeEntity e" +
             " where e.status = 1" +
@@ -50,6 +52,7 @@ public interface EmployeeRepositoryJpa extends JpaRepository<EmployeeEntity, Str
             "e.phoneNumber," +
             "e.username," +
             "e.password," +
+            "e.email," +
             "e.status)" +
             " from EmployeeEntity e " +
             " join EmployeeRoleEntity er on e.employeeId = er.employeeId " +

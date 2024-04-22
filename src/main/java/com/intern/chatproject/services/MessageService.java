@@ -9,4 +9,5 @@ public interface MessageService {
     Object seen(String messageId);
     List<MessageEntityDto> getMessageFromChatBox(String chatBoxId);
     List<MessageEntityDto> getMessageByCustomerId(String customerId);
+    long getCountMessageFromMinTime2MaxTime(long minTime, long maxTime);
 }

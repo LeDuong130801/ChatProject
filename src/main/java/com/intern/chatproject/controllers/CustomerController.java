@@ -38,10 +38,10 @@ public class CustomerController {
     public Object forgotPassword(@RequestBody CustomerEntityDto dto){
         return userAccountService.forgotPassword(dto);
     }
-    @GetMapping("/loginSuccess")
-    public String loginSuccess(@AuthenticationPrincipal OAuth2User principal) {
-        return "redirect:/";
-    }
+//    @GetMapping("/loginSuccess")
+//    public String loginSuccess(@AuthenticationPrincipal OAuth2User principal) {
+//        return "redirect:/";
+//    }
 //    @PostMapping("/get")
 //    public Object get(@RequestBody CustomerEntityDto dto){
 //        return userAccountService.

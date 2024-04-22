@@ -13,7 +13,10 @@ public class Util {
         return "admin";
     }
     public static String employeeSaleId(){
-        return "sale";
+        return "6dc6e559-54fe-4f27-9b7a-d34a828cc6e1";
+    }
+    public static String websiteId(){
+        return "0b540eb8-967d-4e71-99bb-4a8731c554a7";
     }
     public static final String HOST_NAME = "smtp.gmail.com";
     public static final int SSL_PORT = 465;

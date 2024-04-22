@@ -11,6 +11,18 @@ import lombok.experimental.FieldDefaults;
 public class WebsiteEntityDto {
     String websiteId;
     String websiteName;
-    String chatBoxId;
+    String websiteKey;
+    Long showFrom;
+    String groupId;
     Short allowGuest;
+
+    String groupName;
+
+    public WebsiteEntityDto(String websiteId, String websiteName, String websiteKey, String groupId, Short allowGuest) {
+        this.websiteId = websiteId;
+        this.websiteName = websiteName;
+        this.websiteKey = websiteKey;
+        this.groupId = groupId;
+        this.allowGuest = allowGuest;
+    }
 }

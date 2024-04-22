@@ -61,14 +61,16 @@ public class CustomerServiceImpl implements CustomerService {
                     .oauthKey(dto.getOauthKey())
                     .build();
         }
+        CustomerEntity customerEntity = customerRepositoryJpa.save(entity);
         ChatBoxEntity chatBoxEntity = ChatBoxEntity.builder()
                 .chatBoxId(UUID.randomUUID().toString())
                 .chatBoxName(dto.getCustomerName())
                 .customerId(customerId)
                 .employeeId(Util.employeeSaleId())
+                .websiteId(Util.websiteId())
                 .build();
         chatBoxRepositoryJpa.save(chatBoxEntity);
-        return customerRepositoryJpa.save(entity);
+        return customerEntity;
     }
 
     @Override

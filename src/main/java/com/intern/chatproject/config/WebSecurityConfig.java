@@ -59,15 +59,14 @@ public class WebSecurityConfig {
                 .requestMatchers("/api/project/**").hasAnyRole("ADMIN", "EMPLOYEE")
                 .requestMatchers("/api/employee-project/**").hasAnyRole("ADMIN", "EMPLOYEE")
                 .requestMatchers("/api/role/**").hasAnyRole("ADMIN", "TEST")
-                .requestMatchers("/my").authenticated()
                 .anyRequest().permitAll()
                 )
-                .oauth2Login(withDefaults())
-//                .httpBasic(withDefaults())
-//                .formLogin(form -> form
-//                        .loginPage("/login")
-//                        .permitAll()
-//                )
+//                .oauth2Login(withDefaults())
+                .httpBasic(withDefaults())
+                .formLogin(form -> form
+                        .loginPage("/login")
+                        .permitAll()
+                )
                 .logout((logout) -> logout
                         .logoutSuccessUrl("/")
                 )

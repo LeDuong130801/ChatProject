@@ -21,10 +21,12 @@ public interface ChatBoxRepositoryJpa extends JpaRepository<ChatBoxEntity, Strin
             "cb.chatBoxName," +
             "cb.customerId," +
             "cb.employeeId," +
-            "cb.allowGuest) " +
+            "g.allowGuest) " +
             "from ChatBoxEntity cb " +
             "join EmployeeEntity e on cb.employeeId = e.employeeId " +
             "join CustomerEntity ua on cb.customerId = ua.customerId " +
+            "join WebsiteEntity w on w.websiteId = cb.websiteId " +
+            "join GroupEntity g on g.groupId = w.groupId " +
             "where cb.employeeId = :employeeId")
     List<ChatBoxEntityDto> getChatBoxEntityDtoByEmployeeId(String employeeId);
     @Query("select new com.intern.chatproject.dto.ChatBoxEntityDto(" +
@@ -32,10 +34,12 @@ public interface ChatBoxRepositoryJpa extends JpaRepository<ChatBoxEntity, Strin
             "cb.chatBoxName," +
             "cb.customerId," +
             "cb.employeeId," +
-            "cb.allowGuest) " +
+            "g.allowGuest) " +
             "from ChatBoxEntity cb " +
             "join EmployeeEntity e on cb.employeeId = e.employeeId " +
             "join CustomerEntity ua on cb.customerId = ua.customerId " +
+            "join WebsiteEntity w on w.websiteId = cb.websiteId " +
+            "join GroupEntity g on g.groupId = w.groupId " +
             "where cb.chatBoxId = :chatBoxId")
     Optional<ChatBoxEntityDto> getChatBoxEntityDtoByChatBoxId(String chatBoxId);
     @Query("select new com.intern.chatproject.dto.ChatBoxEntityDto(" +
@@ -43,10 +47,12 @@ public interface ChatBoxRepositoryJpa extends JpaRepository<ChatBoxEntity, Strin
             "cb.chatBoxName," +
             "cb.customerId," +
             "cb.employeeId," +
-            "cb.allowGuest) " +
+            "g.allowGuest) " +
             "from ChatBoxEntity cb " +
             "join EmployeeEntity e on cb.employeeId = e.employeeId " +
             "join CustomerEntity ua on cb.customerId = ua.customerId " +
+            "join WebsiteEntity w on w.websiteId = cb.websiteId " +
+            "join GroupEntity g on g.groupId = w.groupId " +
             "where ua.customerId = :customerId")
     Optional<ChatBoxEntityDto> getChatBoxEntityDtoByCustomerId(String customerId);
 }

@@ -40,6 +40,7 @@ public class EmployeeServiceImpl implements EmployeeService {
                 .phoneNumber(dto.getPhoneNumber())
                 .username(dto.getUsername())
                 .password(dto.getPassword())
+                .email(dto.getEmail())
                 .status(Constrants.STATUS.ACTIVE)
                 .updateBy(Util.auth())
                 .createBy(Util.auth())

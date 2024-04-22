@@ -72,6 +72,11 @@ public class MessageServiceImpl implements MessageService {
         return messageRepositoryJpa.getMessageEntityDtoByCustomerId(customerId);
     }
 
+    @Override
+    public long getCountMessageFromMinTime2MaxTime(long minTime, long maxTime) {
+        return messageRepositoryJpa.getCountMessage(minTime, maxTime);
+    }
+
     private String generatorRandom() {
         int leftLimit = 97;
         int rightLimit = 122;

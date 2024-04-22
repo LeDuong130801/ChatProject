@@ -18,6 +18,10 @@ public class WebsiteEntity{
     String websiteId;
     @Column(name = "website_name")
     String websiteName;
-    @Column(name = "chat_box_id")
-    String chatBoxId;
+    @Column(name = "website_key")
+    String websiteKey;
+    @Column(name = "show_from")
+    Long showFrom;
+    @Column(name = "group_id")
+    String groupId;
 }
