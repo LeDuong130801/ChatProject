@@ -5,6 +5,7 @@ import com.intern.chatproject.services.impl.WebsiteServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/api/web")
 public class WebsiteController {

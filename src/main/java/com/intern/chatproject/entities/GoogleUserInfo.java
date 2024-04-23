@@ -10,7 +10,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class GoogleUserInfo {
-    private String type;
-    private String credential;
-    private String g_csrf_token;
+    private String email;
+    private String name;
+    private String picture;
+    private String userId;
 }

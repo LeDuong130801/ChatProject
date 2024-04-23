@@ -3,6 +3,7 @@ package com.intern.chatproject.services.impl;
 import com.intern.chatproject.dto.CustomerEntityDto;
 import com.intern.chatproject.entities.ChatBoxEntity;
 import com.intern.chatproject.entities.CustomerEntity;
+import com.intern.chatproject.entities.GoogleUserInfo;
 import com.intern.chatproject.repositories.jpa.ChatBoxRepositoryJpa;
 import com.intern.chatproject.repositories.jpa.CodeRepositoryJpa;
 import com.intern.chatproject.repositories.jpa.CustomerRepositoryJpa;
@@ -113,6 +114,47 @@ public class CustomerServiceImpl implements CustomerService {
             if (entity.isPresent()) return entity.get();
         }
         return ResponseEntity.ok("Wrong! please input again");
+    }
+    @Override
+    public Object login(GoogleUserInfo googleUserInfo) {
+        if (customerRepositoryJpa.existsCustomerEntityByOauthKey(googleUserInfo.getEmail())){
+            return customerRepositoryJpa.getCustomerEntityDtoByOauthKeyAndOauthTokenAndSource(
+                    googleUserInfo.getEmail(),
+                    googleUserInfo.getUserId(),
+                    Constrants.SOURCE.EMAIL);
+        }
+        String entityId = UUID.randomUUID().toString();
+        while (customerRepositoryJpa.existsCustomerEntityByCustomerId(entityId)){
+            entityId = UUID.randomUUID().toString();
+        }
+        CustomerEntity entity = CustomerEntity.builder()
+                .customerId(entityId)
+                .customerName(googleUserInfo.getName())
+                .oauthKey(googleUserInfo.getEmail())
+                .oauthToken(googleUserInfo.getUserId())
+                .phoneNumber("no")
+                .source(Constrants.SOURCE.EMAIL)
+                .isOnline(Constrants.STATUS.OFFLINE)
+                .build();
+        CustomerEntity result = customerRepositoryJpa.save(entity);
+        ChatBoxEntity chatBoxEntity = ChatBoxEntity.builder()
+                .chatBoxId(UUID.randomUUID().toString())
+                .chatBoxName(entity.getCustomerName())
+                .customerId(entityId)
+                .employeeId(Util.employeeSaleId())
+                .websiteId(Util.websiteId())
+                .build();
+        chatBoxRepositoryJpa.save(chatBoxEntity);
+        return result;
+    }
+    public Object loginWithGoogle(CustomerEntityDto dto) {
+        dto.setSource(Constrants.SOURCE.EMAIL);
+        if (customerRepositoryJpa.existsCustomerEntityByOauthKey(dto.getOauthKey())){
+            return customerRepositoryJpa.getCustomerEntityByOauthKeyAndOauthTokenAndSource(dto.getOauthKey(), dto.getOauthToken(), Constrants.SOURCE.EMAIL);
+        }
+        else{
+            return login(dto);
+        }
     }
 
     @Override
