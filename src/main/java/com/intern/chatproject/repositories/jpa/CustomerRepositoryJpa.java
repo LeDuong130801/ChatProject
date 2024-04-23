@@ -15,6 +15,8 @@ public interface CustomerRepositoryJpa extends JpaRepository<CustomerEntity, Str
     boolean existsCustomerEntityByCustomerNameAndPhoneNumber(String customerName, String phoneNumber);
     boolean existsCustomerEntityByOauthKeyAndOauthTokenAndSource(String oauthKey, String oauthToken, Short source);
     boolean existsCustomerEntityByOauthKey(String oauthKey);
+    boolean existsCustomerEntityByPhoneNumberOrCustomerName(String phoneNumber, String customerName);
+    boolean existsCustomerEntityByPhoneNumber(String phoneNumber);
     @Query("select new com.intern.chatproject.dto.CustomerEntityDto(" +
             "ua.customerId," +
             "ua.customerName," +

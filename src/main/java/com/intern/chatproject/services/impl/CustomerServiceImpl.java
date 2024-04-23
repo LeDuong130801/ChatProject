@@ -104,9 +104,17 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public Object login(CustomerEntityDto dto) {
+        if (dto.getSource() == null){
+            dto.setSource(Constrants.SOURCE.NO_SOURCE);
+        }
         if (dto.getSource().equals(Constrants.SOURCE.NO_SOURCE)){
             Optional<?> entity = customerRepositoryJpa.getCustomerEntityByCustomerNameAndPhoneNumber(dto.getCustomerName(), dto.getPhoneNumber());
-            if (entity.isPresent()) return entity.get();
+            if (entity.isPresent()){
+                return entity.get();
+            }
+            else if (!customerRepositoryJpa.existsCustomerEntityByPhoneNumber(dto.getPhoneNumber())){
+                return create(dto);
+            }
         }
         else
         {
