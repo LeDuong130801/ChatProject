@@ -40,4 +40,7 @@ public class WebsiteServiceImpl implements WebsiteService {
     public Object getById(String id) {
         return websiteRepositoryJpa.getWebsiteEntityDtoByWebsiteId(id);
     }
+    public Object getByWebsiteName(String websiteName){
+        return websiteRepositoryJpa.getWebsiteEntityDtoByWebsiteName(websiteName);
+    }
 }

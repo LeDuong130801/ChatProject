@@ -28,4 +28,5 @@ public class Constrants {
         Short GMAIL = 3;
     }
     public static final Long validSession = 600000L;// 10 min
+    public static final Long oneDayMilis = 86400000L;
 }

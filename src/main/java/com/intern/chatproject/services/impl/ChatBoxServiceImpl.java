@@ -50,4 +50,8 @@ public class ChatBoxServiceImpl implements ChatBoxService {
     public Object getChatBoxOfEmployee(String employeeId){
         return chatBoxRepositoryJpa.getChatBoxEntityDtoByEmployeeId(employeeId);
     }
+
+    public Object filterByEmployeeIdAndCustomerIdAndWebsiteId(String employeeId, String customerId, String websiteId){
+        return chatBoxRepositoryJpa.filterByEmployeeIdAndCustomerIdAndWebsiteId(employeeId, customerId, websiteId);
+    }
 }

@@ -6,10 +6,15 @@ import com.intern.chatproject.repositories.jpa.ChatBoxRepositoryJpa;
 import com.intern.chatproject.repositories.jpa.MessageRepositoryJpa;
 import com.intern.chatproject.services.MessageService;
 import com.intern.chatproject.utils.Constrants;
+import com.intern.chatproject.utils.Util;
 import com.intern.chatproject.utils.exception.CustomException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
@@ -73,8 +78,53 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public long getCountMessageFromMinTime2MaxTime(long minTime, long maxTime) {
+    public Long getCountMessageFromMinTime2MaxTime(Long minTime, Long maxTime) {
+        maxTime = maxTime == null ? Util.getStartDateToday()+Constrants.oneDayMilis : maxTime;
         return messageRepositoryJpa.getCountMessage(minTime, maxTime);
+    }
+
+    @Override
+    public Long getCountMessageFromMinTime2MaxTimeAndWebsite(Long minTime, Long maxTime, String websiteId) {
+        maxTime = maxTime == null ? Util.getStartDateToday()+Constrants.oneDayMilis : maxTime;
+        return messageRepositoryJpa.getCountMessageOfWebsite(minTime, maxTime, websiteId);
+    }
+
+    public Long getCountMessageOfWebsiteOnThis(String str, String websiteId){
+        return switch (str) {
+            case "day" -> messageRepositoryJpa.getCountMessageOfWebsite(Util.getStartDateToday(), System.currentTimeMillis(), websiteId);
+            case "week" -> messageRepositoryJpa.getCountMessageOfWebsite(Util.getStartDateThisWeek(), System.currentTimeMillis(), websiteId);
+            case "month" -> messageRepositoryJpa.getCountMessageOfWebsite(Util.getStartDateThisMonth(), System.currentTimeMillis(), websiteId);
+            case "year" -> messageRepositoryJpa.getCountMessageOfWebsite(Util.getStartDateThisYear(), System.currentTimeMillis(), websiteId);
+            default -> 0L;
+        };
+    }
+    public Long getCountMessageOfWebsiteOnBetween(Integer fromDay, Integer fromMonth, Integer fromYear, Integer toDay, Integer toMonth, Integer toYear, String websiteId){
+        fromDay = fromDay == null ? 1 : fromDay;
+        fromMonth = fromMonth == null ? 1 : fromMonth;
+        fromYear = fromYear == null ? new Date().getYear()+1900 : fromYear;
+        toDay = toDay == null ? 1 : toDay;
+        toMonth = toMonth == null ? 1 : toMonth;
+        toYear = toYear == null ? new Date().getYear()+1900 : toYear;
+        return messageRepositoryJpa.getCountMessageOfWebsite(Util.getStartOf(fromDay, fromMonth, fromYear), Util.getStartOf(toDay, toMonth, toYear), websiteId);
+    }
+
+    public Long getCountMessageOnThis(String str){
+        return switch (str) {
+            case "day" -> messageRepositoryJpa.getCountMessage(Util.getStartDateToday(), System.currentTimeMillis());
+            case "week" -> messageRepositoryJpa.getCountMessage(Util.getStartDateThisWeek(), System.currentTimeMillis());
+            case "month" -> messageRepositoryJpa.getCountMessage(Util.getStartDateThisMonth(), System.currentTimeMillis());
+            case "year" -> messageRepositoryJpa.getCountMessage(Util.getStartDateThisYear(), System.currentTimeMillis());
+            default -> 0L;
+        };
+    }
+    public Long getCountMessageOnBetween(Integer fromDay, Integer fromMonth, Integer fromYear, Integer toDay, Integer toMonth, Integer toYear){
+        fromDay = fromDay == null ? 1 : fromDay;
+        fromMonth = fromMonth == null ? 1 : fromMonth;
+        fromYear = fromYear == null ? new Date().getYear()+1900 : fromYear;
+        toDay = toDay == null ? 1 : toDay;
+        toMonth = toMonth == null ? 1 : toMonth;
+        toYear = toYear == null ? new Date().getYear()+1900 : toYear;
+        return messageRepositoryJpa.getCountMessage(Util.getStartOf(fromDay, fromMonth, fromYear), Util.getStartOf(toDay, toMonth, toYear));
     }
 
     private String generatorRandom() {

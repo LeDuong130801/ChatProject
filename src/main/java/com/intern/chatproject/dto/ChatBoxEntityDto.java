@@ -23,6 +23,8 @@ public class ChatBoxEntityDto {
 
     String customerName;
     String employeeName;
+    String websiteId;
+    String websiteName;
     List<MessageEntity> messageList;
 
     public ChatBoxEntityDto(String chatBoxId, String chatBoxName, String customerId, String employeeId, Short allowGuest) {
@@ -41,5 +43,17 @@ public class ChatBoxEntityDto {
         this.allowGuest = allowGuest;
         this.customerName = customerName;
         this.employeeName = employeeName;
+    }
+
+    public ChatBoxEntityDto(String chatBoxId, String chatBoxName, String customerId, String employeeId, Short allowGuest, String customerName, String employeeName, String websiteId, String websiteName) {
+        this.chatBoxId = chatBoxId;
+        this.chatBoxName = chatBoxName;
+        this.customerId = customerId;
+        this.employeeId = employeeId;
+        this.allowGuest = allowGuest;
+        this.customerName = customerName;
+        this.employeeName = employeeName;
+        this.websiteId = websiteId;
+        this.websiteName = websiteName;
     }
 }
