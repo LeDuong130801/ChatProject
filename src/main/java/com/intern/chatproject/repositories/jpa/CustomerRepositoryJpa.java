@@ -12,6 +12,7 @@ import java.util.Optional;
 public interface CustomerRepositoryJpa extends JpaRepository<CustomerEntity, String> {
 
     boolean existsCustomerEntityByCustomerId(String customerId);
+    boolean existsCustomerEntityByCustomerIdAndSource(String customerId, Short source);
     boolean existsCustomerEntityByCustomerNameAndPhoneNumber(String customerName, String phoneNumber);
     boolean existsCustomerEntityByOauthKeyAndOauthTokenAndSource(String oauthKey, String oauthToken, Short source);
     boolean existsCustomerEntityByOauthKey(String oauthKey);
@@ -43,4 +44,17 @@ public interface CustomerRepositoryJpa extends JpaRepository<CustomerEntity, Str
             "and ua.source = :source")
     Optional<CustomerEntityDto> getCustomerEntityDtoByOauthKeyAndOauthTokenAndSource(String oauthKey, String oauthToken, Short source);
     Optional<CustomerEntity> getCustomerEntityByOauthKeyAndOauthTokenAndSource(String oauthKey, String oauthToken, Short source);
+
+    @Query("select new com.intern.chatproject.dto.CustomerEntityDto(" +
+            "ua.customerId," +
+            "ua.customerName," +
+            "ua.oauthKey," +
+            "ua.oauthToken," +
+            "ua.source," +
+            "ua.phoneNumber) " +
+            "from CustomerEntity ua " +
+            "where ua.customerId = :customerId " +
+            "and ua.source = :source")
+    Optional<CustomerEntityDto> getCustomerEntityDtoByCustomerAndIdSource(String customerId, Short source);
+    Optional<CustomerEntity> getCustomerEntityByCustomerIdAndSource(String customerId, Short source);
 }

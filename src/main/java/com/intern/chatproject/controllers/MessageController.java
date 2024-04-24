@@ -1,5 +1,6 @@
 package com.intern.chatproject.controllers;
 
+import com.intern.chatproject.dto.ChatBoxEntityDto;
 import com.intern.chatproject.dto.MessageEntityDto;
 import com.intern.chatproject.entities.MessageEntity;
 import com.intern.chatproject.services.MessageService;
@@ -36,9 +37,9 @@ public class MessageController {
         );
     }
 
-    @GetMapping("/box/{boxchat_id}/{sender_id}")
-    public List<MessageEntityDto> getMessage(@PathVariable(value = "boxchat_id") String boxChatId, @PathVariable(value = "sender_id") String senderId) {
-        return messageService.getMessageFromChatBox(boxChatId);
+    @GetMapping("/api/message/get")
+    public List<MessageEntityDto> getMessage(@RequestBody ChatBoxEntityDto dto) {
+        return messageService.getMessageByCustomerIdAndWebsiteName(dto.getCustomerId(), dto.getWebsiteName());
     }
 
     @GetMapping("/api/message/website/count")

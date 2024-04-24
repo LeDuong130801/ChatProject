@@ -25,7 +25,7 @@ public class Constrants {
         Short NO_SOURCE = 0;
         Short EMAIL = 1;
         Short FACEBOOK = 2;
-        Short GMAIL = 3;
+        Short GUEST = 3;
     }
     public static final Long validSession = 600000L;// 10 min
     public static final Long oneDayMilis = 86400000L;

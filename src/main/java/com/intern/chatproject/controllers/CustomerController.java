@@ -57,6 +57,10 @@ public class CustomerController {
     public Object loginGoogle(@RequestBody GoogleUserInfo userInfo){
         return userAccountService.login(userInfo);
     }
+    @PostMapping(value = "/loginguest")
+    public Object loginGuest(@RequestBody CustomerEntityDto dto){
+        return userAccountService.loginGuest(dto);
+    }
 //    @GetMapping("/loginSuccess")
 //    public String loginSuccess(@AuthenticationPrincipal OAuth2User principal) {
 //        return "redirect:/";

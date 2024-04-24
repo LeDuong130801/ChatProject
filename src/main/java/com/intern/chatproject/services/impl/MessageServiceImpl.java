@@ -73,8 +73,8 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public List<MessageEntityDto> getMessageByCustomerId(String customerId) {
-        return messageRepositoryJpa.getMessageEntityDtoByCustomerId(customerId);
+    public List<MessageEntityDto> getMessageByCustomerIdAndWebsiteName(String customerId, String websiteName) {
+        return messageRepositoryJpa.getMessageEntityDtoByCustomerIdAndWebsiteName(customerId, websiteName);
     }
 
     @Override

@@ -8,7 +8,7 @@ public interface MessageService {
     Object send(MessageEntityDto dto);
     Object seen(String messageId);
     List<MessageEntityDto> getMessageFromChatBox(String chatBoxId);
-    List<MessageEntityDto> getMessageByCustomerId(String customerId);
+    List<MessageEntityDto> getMessageByCustomerIdAndWebsiteName(String customerId, String websiteName);
     Long getCountMessageFromMinTime2MaxTime(Long minTime, Long maxTime);
     Long getCountMessageFromMinTime2MaxTimeAndWebsite(Long minTime, Long maxTime, String websiteId);
 }

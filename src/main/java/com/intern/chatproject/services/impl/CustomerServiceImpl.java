@@ -137,7 +137,7 @@ public class CustomerServiceImpl implements CustomerService {
         }
         CustomerEntity entity = CustomerEntity.builder()
                 .customerId(entityId)
-                .customerName(googleUserInfo.getName())
+                .customerName(googleUserInfo.getName().trim())
                 .oauthKey(googleUserInfo.getEmail())
                 .oauthToken(googleUserInfo.getUserId())
                 .phoneNumber("no")
@@ -147,7 +147,7 @@ public class CustomerServiceImpl implements CustomerService {
         CustomerEntity result = customerRepositoryJpa.save(entity);
         ChatBoxEntity chatBoxEntity = ChatBoxEntity.builder()
                 .chatBoxId(UUID.randomUUID().toString())
-                .chatBoxName(entity.getCustomerName())
+                .chatBoxName(entity.getCustomerName().trim())
                 .customerId(entityId)
                 .employeeId(Util.employeeSaleId())
                 .websiteId(Util.websiteId())
@@ -155,14 +155,39 @@ public class CustomerServiceImpl implements CustomerService {
         chatBoxRepositoryJpa.save(chatBoxEntity);
         return result;
     }
-    public Object loginWithGoogle(CustomerEntityDto dto) {
-        dto.setSource(Constrants.SOURCE.EMAIL);
-        if (customerRepositoryJpa.existsCustomerEntityByOauthKey(dto.getOauthKey())){
-            return customerRepositoryJpa.getCustomerEntityByOauthKeyAndOauthTokenAndSource(dto.getOauthKey(), dto.getOauthToken(), Constrants.SOURCE.EMAIL);
+    public Object loginGuest(CustomerEntityDto dto){
+        if (dto.getSource().equals(Constrants.SOURCE.GUEST)){
+            Optional<CustomerEntityDto> entityDto = customerRepositoryJpa.getCustomerEntityDtoByCustomerAndIdSource(dto.getCustomerId(), Constrants.SOURCE.GUEST);
+            if (entityDto.isPresent()){
+                return entityDto.get();
+            }
+            else{
+                String entityId = UUID.randomUUID().toString();
+                while (customerRepositoryJpa.existsCustomerEntityByCustomerId(entityId)){
+                    entityId = UUID.randomUUID().toString();
+                }
+                CustomerEntity entity = CustomerEntity.builder()
+                        .customerId(entityId)
+                        .customerName(dto.getCustomerName() == null ? "GUEST"+entityId : dto.getCustomerName())
+                        .oauthKey("no")
+                        .oauthToken("no")
+                        .phoneNumber("no")
+                        .source(Constrants.SOURCE.NO_SOURCE)
+                        .isOnline(Constrants.STATUS.OFFLINE)
+                        .build();
+                CustomerEntity result = customerRepositoryJpa.save(entity);
+                ChatBoxEntity chatBoxEntity = ChatBoxEntity.builder()
+                        .chatBoxId(UUID.randomUUID().toString())
+                        .chatBoxName(entity.getCustomerName().trim())
+                        .customerId(entityId)
+                        .employeeId(Util.employeeSaleId())
+                        .websiteId(Util.websiteId())
+                        .build();
+                chatBoxRepositoryJpa.save(chatBoxEntity);
+                return result;
+            }
         }
-        else{
-            return login(dto);
-        }
+        return login(dto);
     }
 
     @Override
