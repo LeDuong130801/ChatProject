@@ -53,7 +53,7 @@ public class MessageServiceImpl implements MessageService {
                     .build();
             return messageRepositoryJpa.save(entity);
         }
-        throw new CustomException("Not Found Chat");
+        else throw new CustomException("Not Found Chat");
     }
 
     @Override

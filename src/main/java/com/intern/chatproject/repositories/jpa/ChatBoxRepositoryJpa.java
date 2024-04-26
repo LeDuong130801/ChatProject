@@ -75,4 +75,18 @@ public interface ChatBoxRepositoryJpa extends JpaRepository<ChatBoxEntity, Strin
             "join GroupEntity g on g.groupId = w.groupId " +
             "where ua.customerId = :customerId")
     Optional<ChatBoxEntityDto> getChatBoxEntityDtoByCustomerId(String customerId);
+    @Query("select new com.intern.chatproject.dto.ChatBoxEntityDto(" +
+            "cb.chatBoxId," +
+            "cb.chatBoxName," +
+            "cb.customerId," +
+            "cb.employeeId," +
+            "g.allowGuest) " +
+            "from ChatBoxEntity cb " +
+            "join EmployeeEntity e on cb.employeeId = e.employeeId " +
+            "join CustomerEntity ua on cb.customerId = ua.customerId " +
+            "join WebsiteEntity w on w.websiteId = cb.websiteId " +
+            "join GroupEntity g on g.groupId = w.groupId " +
+            "where ua.customerId = :customerId " +
+            "and ")
+    Optional<ChatBoxEntityDto> getChatBoxEntityDtoByCustomerIdAndWebsiteName(String customerId, String websiteName);
 }

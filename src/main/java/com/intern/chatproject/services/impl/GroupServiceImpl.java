@@ -21,7 +21,7 @@ public class GroupServiceImpl implements GroupService {
         GroupEntity entity = GroupEntity.builder()
                 .groupId(UUID.randomUUID().toString())
                 .groupName(dto.getGroupName())
-                .allowGuest(dto.getAllowGuest() == null ? Constrants.STATUS.ACTIVE : Constrants.STATUS.INACTIVE)
+                .allowGuest(dto.getAllowGuest() == null ? Constrants.STATUS.INACTIVE : dto.getAllowGuest())
                 .build();
         return groupRepositoryJpa.save(entity);
     }
