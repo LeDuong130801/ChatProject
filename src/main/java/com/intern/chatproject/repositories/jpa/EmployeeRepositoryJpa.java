@@ -57,10 +57,31 @@ public interface EmployeeRepositoryJpa extends JpaRepository<EmployeeEntity, Str
             " from EmployeeEntity e " +
             " join EmployeeRoleEntity er on e.employeeId = er.employeeId " +
             " where e.status = 1" +
-            " and (:employeeFullname is null or e.employeeName like %:employeeName%)" +
+            " and (:employeeName is null or e.employeeName like %:employeeName%)" +
             " and (:employeeId is null or e.employeeId like %:employeeId%)" +
             " and (:roleId is null or er.roleId = :roleId)")
     List<EmployeeEntityDto> getEmployeeEntityDtoByProperties(String employeeId, String employeeName, String roleId);
 
+    @Query("select distinct new com.intern.chatproject.dto.EmployeeEntityDto(" +
+            "e.employeeId," +
+            "e.employeeName," +
+            "e.phoneNumber," +
+            "e.username," +
+            "e.password," +
+            "e.email," +
+            "e.status," +
+            "r.roleId," +
+            "r.roleName," +
+            "count(distinct w.websiteId))" +
+            "from EmployeeEntity e " +
+            "join EmployeeRoleEntity er on e.employeeId = er.employeeId " +
+            "join RoleEntity r on er.roleId = r.roleId " +
+            "join ChatBoxEntity cb on cb.employeeId = e.employeeId " +
+            "join WebsiteEntity w on w.websiteId = cb.websiteId " +
+            "where e.status = 1 " +
+            "and (:employeeName is null or e.employeeName like %:employeeName%) " +
+            "and (:employeeId is null or e.employeeId like %:employeeId%) " +
+            "and (:roleId is null or er.roleId = :roleId)")
+    List<EmployeeEntityDto> filterByEmployeeIdAndEmployeeNameAndRoleId(String employeeId, String employeeName, String roleId);
 }
 

@@ -35,4 +35,10 @@ public class EmployeeController {
         return employeeService.login(dto);
     }
 
+    @GetMapping(value = "/filter")
+    public Object filter(@RequestParam(value = "employee_id", required = false)String employeeId,
+                         @RequestParam(value = "employee_name", required = false)String employeeName,
+                         @RequestParam(value = "role_id", required = false) String roleId){
+        return employeeService.filterEmployee(employeeId, employeeName, roleId);
+    }
 }

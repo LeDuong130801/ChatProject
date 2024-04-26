@@ -23,43 +23,43 @@ import java.util.Collections;
 @RequestMapping("/api/customer")
 public class CustomerController {
     @Autowired
-    CustomerServiceImpl userAccountService;
+    CustomerServiceImpl customerService;
     static NetHttpTransport transport = new NetHttpTransport();
 
     @PostMapping("/login-process")
     public Object loginProcess(@RequestBody CustomerEntityDto dto){
-        return userAccountService.login(dto);
+        return customerService.login(dto);
     }
 
     @PostMapping("/sign-up-process")
     public Object signUpProcess(@RequestBody CustomerEntityDto dto){
-        return userAccountService.create(dto);
+        return customerService.create(dto);
     }
 
     @PutMapping("/change-password-process")
     public Object changePasswordProcess(@RequestBody CustomerEntityDto dto){
-        return userAccountService.changePassword(dto);
+        return customerService.changePassword(dto);
     }
 
     @PutMapping("/edit")
     public Object edit(@RequestBody CustomerEntityDto dto){
-        return userAccountService.edit(dto);
+        return customerService.edit(dto);
     }
     @PutMapping("/forgot-password")
     public Object forgotPassword(@RequestBody CustomerEntityDto dto){
-        return userAccountService.forgotPassword(dto);
+        return customerService.forgotPassword(dto);
     }
     @PostMapping("/login-with-google")
     public Object loginWithGoogle(@RequestBody CustomerEntityDto dto){
-        return userAccountService.login(dto);
+        return customerService.login(dto);
     }
     @PostMapping(value = "/logingoogle")
     public Object loginGoogle(@RequestBody GoogleUserInfo userInfo){
-        return userAccountService.login(userInfo);
+        return customerService.login(userInfo);
     }
     @PostMapping(value = "/loginguest")
     public Object loginGuest(@RequestBody CustomerEntityDto dto){
-        return userAccountService.loginGuest(dto);
+        return customerService.loginGuest(dto);
     }
 //    @GetMapping("/loginSuccess")
 //    public String loginSuccess(@AuthenticationPrincipal OAuth2User principal) {
@@ -67,6 +67,6 @@ public class CustomerController {
 //    }
 //    @PostMapping("/get")
 //    public Object get(@RequestBody CustomerEntityDto dto){
-//        return userAccountService.
+//        return customerService.
 //    }
 }

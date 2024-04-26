@@ -88,6 +88,9 @@ public class EmployeeServiceImpl implements EmployeeService {
         return deletedIdList;
     }
 
+    public Object filterEmployee(String employeeId, String employeeName, String roleId){
+        return employeeRepositoryJpa.filterByEmployeeIdAndEmployeeNameAndRoleId(employeeId, employeeName, roleId);
+    }
     @Override
     public Object getDtoById(String employeeId) {
         Optional<EmployeeEntityDto> entityOptional = employeeRepositoryJpa.getEmployeeEntityDtoByEmployeeId(employeeId);
