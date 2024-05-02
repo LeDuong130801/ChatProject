@@ -42,7 +42,7 @@ public class ChatBoxEntityDto {
         this.groupName = groupName;
     }
 
-    List<MessageEntity> messageList;
+    List<MessageEntityDto> messageList;
 
     public ChatBoxEntityDto(String chatBoxId, String chatBoxName, String customerId, String employeeId, Short allowGuest) {
         this.chatBoxId = chatBoxId;

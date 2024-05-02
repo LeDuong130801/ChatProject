@@ -107,4 +107,25 @@ public interface ChatBoxRepositoryJpa extends JpaRepository<ChatBoxEntity, Strin
             "and (:websiteId is null or w.websiteId = :websiteId) " +
             "and (:employeeId is null or cb.employeeId = :employeeId)")
     List<ChatBoxEntityDto> filterByCustomerNameAndWebsiteIdAndEmployeeId(String customerName, String websiteId, String employeeId);
+    @Query("select new com.intern.chatproject.dto.ChatBoxEntityDto(" +
+            "cb.chatBoxId," +
+            "cb.chatBoxName," +
+            "cb.customerId," +
+            "cb.employeeId," +
+            "g.allowGuest," +
+            "c.customerName," +
+            "e.employeeName," +
+            "w.websiteId," +
+            "w.websiteName," +
+            "g.groupId," +
+            "g.groupName " +
+            ") from ChatBoxEntity cb " +
+            "join EmployeeEntity e on cb.employeeId = e.employeeId " +
+            "join CustomerEntity c on cb.customerId = c.customerId " +
+            "join WebsiteEntity w on w.websiteId = cb.websiteId " +
+            "join GroupEntity g on g.groupId = w.groupId " +
+            "where (:websiteName is null or w.websiteName like %:websiteName%) " +
+            "and (:websiteId is null or w.websiteId = :websiteId) " +
+            "and (:employeeId is null or cb.employeeId = :employeeId)")
+    List<ChatBoxEntityDto> filterByWebsiteIdAndWebsiteNameAndEmployeeId(String websiteId, String websiteName, String employeeId);
 }
