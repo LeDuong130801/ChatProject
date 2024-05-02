@@ -1,7 +1,10 @@
 package com.intern.chatproject.controllers;
 
 import com.intern.chatproject.dto.EmployeeEntityDto;
+import com.intern.chatproject.entities.TokenEntity;
 import com.intern.chatproject.services.impl.EmployeeServiceImpl;
+import com.intern.chatproject.services.impl.TokenServiceImpl;
+import com.intern.chatproject.utils.Constrants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,6 +15,8 @@ import java.util.List;
 public class EmployeeController {
     @Autowired
     EmployeeServiceImpl employeeService;
+    @Autowired
+    TokenServiceImpl tokenService;
 
     @GetMapping(value = "/get")
     public Object get(@RequestParam(value = "employee_id") String employeeId){
@@ -31,8 +36,11 @@ public class EmployeeController {
         return employeeService.delete(employeeIdList);
     }
     @PostMapping(value = "/login-process")
-    public Object login(@RequestBody EmployeeEntityDto dto){
-        return employeeService.login(dto);
+    public Object login(@RequestBody EmployeeEntityDto dto) {
+        EmployeeEntityDto entityDto = (EmployeeEntityDto) employeeService.login(dto);
+        TokenEntity tokenEntity = (TokenEntity) tokenService.createToken(entityDto.getEmployeeId(), Constrants.TYPEACCOUNT.EMPLOYEE);
+        entityDto.setToken(tokenEntity.getTokenId());
+        return entityDto;
     }
 
     @GetMapping(value = "/filter")

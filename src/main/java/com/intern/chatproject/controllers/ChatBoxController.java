@@ -14,7 +14,8 @@ public class ChatBoxController {
     ChatBoxServiceImpl chatBoxService;
 
     @PostMapping("/create")
-    Object create(@RequestParam("user_account_id") String userAccountId){
+    Object create(
+                  @RequestParam("user_account_id") String userAccountId){
         return chatBoxService.create(userAccountId);
     }
     @PostMapping("/customer/get")
@@ -23,12 +24,19 @@ public class ChatBoxController {
         return chatBoxService.getChatBoxOfCustomer(dto.getCustomerId());
     }
     @GetMapping("/customer/get")
+    Object getChatBoxDtoDetailOfEmployee(
+            @RequestParam(value = "website_id", required = false)String websiteId,
+            @RequestParam(value = "website_name", required = false)String websiteName,
+            @RequestParam(value = "customer_id")String customerId){
+        return chatBoxService.getChatBoxDetailOfCustomer(websiteId, websiteName, customerId);
+    }
+    @GetMapping("/employee/get")
     Object getChatBoxDtoDetailOfCustomer(
             @RequestParam(value = "website_id", required = false)String websiteId,
             @RequestParam(value = "website_name", required = false)String websiteName,
             @RequestParam(value = "employee_id")String employeeId
             ){
-        return chatBoxService.getAllChatBoxDetail(websiteId, websiteName, employeeId);
+        return chatBoxService.getAllChatBoxDetailOfEmployee(websiteId, websiteName, employeeId);
     }
     @PostMapping("/employee/get")
     Object getChatBoxOfEmployee(@RequestBody ChatBoxEntityDto dto){

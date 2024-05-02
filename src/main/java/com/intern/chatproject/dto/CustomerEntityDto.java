@@ -1,10 +1,7 @@
 package com.intern.chatproject.dto;
 
-import jakarta.persistence.Column;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-
-import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -19,6 +16,7 @@ public class CustomerEntityDto {
     Short source;
     String phoneNumber;
     Short isOnline;
+    String token;
 
     public CustomerEntityDto(String customerId, String customerName, String oauthKey, String oauthToken, Short source, String phoneNumber) {
         this.customerId = customerId;

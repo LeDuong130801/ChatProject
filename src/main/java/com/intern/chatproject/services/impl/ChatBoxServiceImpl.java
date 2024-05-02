@@ -57,8 +57,15 @@ public class ChatBoxServiceImpl implements ChatBoxService {
     public Object filterByEmployeeIdAndCustomerIdAndWebsiteId(String employeeId, String customerId, String websiteId){
         return chatBoxRepositoryJpa.filterByEmployeeIdAndCustomerIdAndWebsiteId(employeeId, customerId, websiteId);
     }
-    public Object getAllChatBoxDetail(String websiteId, String websiteName, String employeeId){
+    public Object getAllChatBoxDetailOfEmployee(String websiteId, String websiteName, String employeeId){
         List<ChatBoxEntityDto> chatBoxEntityDtoList = chatBoxRepositoryJpa.filterByWebsiteIdAndWebsiteNameAndEmployeeId(websiteId, websiteName, employeeId);
+        for (ChatBoxEntityDto chatBoxEntityDto : chatBoxEntityDtoList){
+            chatBoxEntityDto.setMessageList(messageRepositoryJpa.getMessageEntityDtoByChatBoxId(chatBoxEntityDto.getChatBoxId()));
+        }
+        return chatBoxEntityDtoList;
+    }
+    public Object getChatBoxDetailOfCustomer(String websiteId, String websiteName, String customerId){
+        List<ChatBoxEntityDto> chatBoxEntityDtoList = chatBoxRepositoryJpa.filterByWebsiteIdAndWebsiteNameAndCustomerId(websiteId, websiteName, customerId);
         for (ChatBoxEntityDto chatBoxEntityDto : chatBoxEntityDtoList){
             chatBoxEntityDto.setMessageList(messageRepositoryJpa.getMessageEntityDtoByChatBoxId(chatBoxEntityDto.getChatBoxId()));
         }

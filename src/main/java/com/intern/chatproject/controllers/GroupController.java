@@ -17,4 +17,8 @@ public class GroupController {
     Object create(@RequestBody GroupEntityDto dto){
         return groupService.create(dto);
     }
+    @GetMapping(value = "/get")
+    Object get(@RequestParam(value = "group_id") String groupId){
+        return groupService.getById(groupId);
+    }
 }

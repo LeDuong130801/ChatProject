@@ -7,7 +7,10 @@ import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.gson.GsonFactory;
 import com.intern.chatproject.dto.CustomerEntityDto;
 import com.intern.chatproject.entities.GoogleUserInfo;
+import com.intern.chatproject.entities.TokenEntity;
 import com.intern.chatproject.services.impl.CustomerServiceImpl;
+import com.intern.chatproject.services.impl.TokenServiceImpl;
+import com.intern.chatproject.utils.Constrants;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -24,11 +27,17 @@ import java.util.Collections;
 public class CustomerController {
     @Autowired
     CustomerServiceImpl customerService;
+
+    @Autowired
+    TokenServiceImpl tokenService;
     static NetHttpTransport transport = new NetHttpTransport();
 
     @PostMapping("/login-process")
     public Object loginProcess(@RequestBody CustomerEntityDto dto){
-        return customerService.login(dto);
+        CustomerEntityDto customerEntityDto = (CustomerEntityDto) customerService.login(dto);
+        TokenEntity tokenEntity = (TokenEntity) tokenService.createToken(customerEntityDto.getCustomerId(), Constrants.TYPEACCOUNT.CUSTOMER);
+        customerEntityDto.setToken(tokenEntity.getTokenId());
+        return customerEntityDto;
     }
 
     @PostMapping("/sign-up-process")

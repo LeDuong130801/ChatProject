@@ -22,4 +22,8 @@ public class WebsiteController {
     Object getByWebsiteName(@RequestBody WebsiteEntityDto dto){
         return websiteService.getByWebsiteName(dto.getWebsiteName());
     }
+    @GetMapping(value = "/get")
+    Object get(@RequestParam(value = "website_id")String websiteId){
+        return websiteService.getById(websiteId);
+    }
 }

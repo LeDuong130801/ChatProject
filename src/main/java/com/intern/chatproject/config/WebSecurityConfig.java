@@ -54,11 +54,11 @@ public class WebSecurityConfig {
         CookieClearingLogoutHandler cookies = new CookieClearingLogoutHandler("our-custom-cookie");
 
         http.authorizeHttpRequests((authorize) -> authorize
-                .requestMatchers("/api/employee/**").hasRole("ADMIN")
-                .requestMatchers("/api/employee/get*").hasAnyRole("ADMIN", "EMPLOYEE")
-                .requestMatchers("/api/project/**").hasAnyRole("ADMIN", "EMPLOYEE")
-                .requestMatchers("/api/employee-project/**").hasAnyRole("ADMIN", "EMPLOYEE")
-                .requestMatchers("/api/role/**").hasAnyRole("ADMIN", "TEST")
+//                .requestMatchers("/api/employee/**").hasRole("ADMIN")
+//                .requestMatchers("/api/employee/get*").hasAnyRole("ADMIN", "EMPLOYEE")
+//                .requestMatchers("/api/project/**").hasAnyRole("ADMIN", "EMPLOYEE")
+//                .requestMatchers("/api/employee-project/**").hasAnyRole("ADMIN", "EMPLOYEE")
+//                .requestMatchers("/api/role/**").hasAnyRole("ADMIN", "TEST")
                 .anyRequest().permitAll()
                 )
 //                .oauth2Login(withDefaults())

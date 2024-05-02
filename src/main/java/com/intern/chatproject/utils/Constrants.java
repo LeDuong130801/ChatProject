@@ -6,6 +6,16 @@ public class Constrants {
     public static final String API_BASIC = "/basic/api";
     public static final String API_PRIVATE = "/private/api";
 
+    public interface TOKEN{
+        Short tokenAccept = 129;
+        Short tokenInvalid = 130;
+        Short tokenNotAccept = 131;
+        Short tokenExpired = 132;
+    }
+    public interface TYPEACCOUNT{
+        Short CUSTOMER = 0;
+        Short EMPLOYEE = 1;
+    }
     public interface STATUS{
         Short ACTIVE = 1;
         Short INACTIVE = 0;
@@ -29,4 +39,5 @@ public class Constrants {
     }
     public static final Long validSession = 600000L;// 10 min
     public static final Long oneDayMilis = 86400000L;
+    public static final Long basicTokenValid = 2592000000L;
 }

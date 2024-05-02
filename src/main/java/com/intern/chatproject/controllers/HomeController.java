@@ -2,11 +2,10 @@ package com.intern.chatproject.controllers;
 
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.http.javanet.NetHttpTransport;
-import com.google.api.client.json.JsonFactory;
-import com.google.api.client.json.gson.GsonFactory;
-import com.intern.chatproject.entities.GoogleUserInfo;
-import com.intern.chatproject.entities.IdTokenEntity;
+import com.intern.chatproject.services.impl.TokenServiceImpl;
+import com.intern.chatproject.utils.Constrants;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -27,6 +26,8 @@ import java.util.Collections;
 @CrossOrigin
 public class HomeController {
 
+    @Autowired
+    TokenServiceImpl tokenService;
     static NetHttpTransport transport = new NetHttpTransport();
 
     @GetMapping({"/", "/index"})
@@ -55,5 +56,13 @@ public class HomeController {
 
         // Trả về responseBody cho client
         return responseBody;
+    }
+    @GetMapping("/test-token")
+    public ResponseEntity<?> testToken(@RequestHeader(value = "my_token") String myToken, @RequestParam(value = "o") String o){
+        log.info(tokenService.checkToken(myToken, new String[]{"ADMIN"}).toString());
+        if( tokenService.checkToken(myToken, new String[]{"ADMIN"}).equals( Constrants.TOKEN.tokenAccept)){
+            return ResponseEntity.ok(o);
+        }
+        return ResponseEntity.ok("bad");
     }
 }
