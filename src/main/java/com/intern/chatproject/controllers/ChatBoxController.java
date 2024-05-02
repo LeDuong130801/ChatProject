@@ -18,6 +18,7 @@ public class ChatBoxController {
         return chatBoxService.create(userAccountId);
     }
     @PostMapping("/customer/get")
+    //truyen them websiteid???
     Object getChatBoxOfCustomer(@RequestBody ChatBoxEntityDto dto){
         return chatBoxService.getChatBoxOfCustomer(dto.getCustomerId());
     }

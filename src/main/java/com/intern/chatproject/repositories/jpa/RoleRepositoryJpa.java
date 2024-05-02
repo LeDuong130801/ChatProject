@@ -33,6 +33,6 @@ public interface RoleRepositoryJpa extends JpaRepository<RoleEntity, String> {
             "r.createTime," +
             "r.updateBy," +
             "r.updateTime) " +
-            "from RoleEntity r where r.status = 1 and r.roleName = :roleName")
+            "from RoleEntity r where r.status = 1 and r.roleName like %:roleName%")
     List<RoleEntityDto> getRoleEntityDtoByRoleName(String roleName);
 }

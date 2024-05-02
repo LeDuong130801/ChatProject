@@ -38,8 +38,8 @@ public class MessageController {
     }
 
     @GetMapping("/api/message/get")
-    public List<MessageEntityDto> getMessage(@RequestBody ChatBoxEntityDto dto) {
-        return messageService.getMessageByCustomerIdAndWebsiteName(dto.getCustomerId(), dto.getWebsiteName());
+    public List<MessageEntityDto> getMessage( @RequestParam(value = "customer_id") String customerId,@RequestParam(value = "website_name") String websiteName) {
+        return messageService.getMessageByCustomerIdAndWebsiteName(customerId, websiteName);
     }
 
     @GetMapping("/api/message/website/count")
