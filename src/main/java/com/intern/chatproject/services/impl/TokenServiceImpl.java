@@ -33,7 +33,7 @@ public class TokenServiceImpl {
         }
         return Constrants.TOKEN.tokenInvalid;
     }
-    public Object createToken(String entityId, Short type){
+    public String createToken(String entityId, Short type){
         TokenEntity tokenEntity = new TokenEntity();
         String tokenId = generatorToken();
         StringBuilder role = new StringBuilder();
@@ -55,7 +55,7 @@ public class TokenServiceImpl {
                 .role(role.toString())
                 .validTime(System.currentTimeMillis()+Constrants.basicTokenValid)
                 .build();
-        return tokenRepositoryJpa.save(tokenEntity);
+        return tokenRepositoryJpa.save(tokenEntity).getTokenId();
     }
     private String generatorToken(){
         int leftLimit = 48; // numeral '0'

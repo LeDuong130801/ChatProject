@@ -35,6 +35,18 @@ public interface MessageRepositoryJpa extends JpaRepository<MessageEntity, Strin
             "join WebsiteEntity w on w.websiteId = cb.websiteId " +
             "where cb.customerId = :customerId and w.websiteName = :websiteName order by m.sendTime desc")
     List<MessageEntityDto> getMessageEntityDtoByCustomerIdAndWebsiteName(String customerId, String websiteName);
+//    @Query("select new com.intern.chatproject.dto.MessageEntityDto(" +
+//            "m.messageId, " +
+//            "m.messageContent, " +
+//            "m.messageType," +
+//            "m.sendTime," +
+//            "m.status," +
+//            "m.chatBoxId) " +
+//            "from MessageEntity m " +
+//            "join ChatBoxEntity cb on cb.chatBoxId = m.chatBoxId " +
+//            "join WebsiteEntity w on w.websiteId = cb.websiteId " +
+//            "where cb.customerId = :customerId and w.websiteName = :websiteName order by m.sendTime desc ")
+//    List<MessageEntityDto> getMessageEntityDtoByCustomerIdAndWebsiteNameAndLimit(String customerId, String websiteName, Integer page);
 
     @Query("select count(m.messageId) from MessageEntity m where m.sendTime > :minTime and m.sendTime < :maxTime")
     long getCountMessage(long minTime, long maxTime);

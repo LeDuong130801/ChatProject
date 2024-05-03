@@ -37,10 +37,7 @@ public class EmployeeController {
     }
     @PostMapping(value = "/login-process")
     public Object login(@RequestBody EmployeeEntityDto dto) {
-        EmployeeEntityDto entityDto = (EmployeeEntityDto) employeeService.login(dto);
-        TokenEntity tokenEntity = (TokenEntity) tokenService.createToken(entityDto.getEmployeeId(), Constrants.TYPEACCOUNT.EMPLOYEE);
-        entityDto.setToken(tokenEntity.getTokenId());
-        return entityDto;
+        return employeeService.login(dto, tokenService);
     }
 
     @GetMapping(value = "/filter")

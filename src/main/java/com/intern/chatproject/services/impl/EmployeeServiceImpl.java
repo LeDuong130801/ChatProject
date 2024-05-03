@@ -2,6 +2,7 @@ package com.intern.chatproject.services.impl;
 
 import com.intern.chatproject.dto.EmployeeEntityDto;
 import com.intern.chatproject.entities.EmployeeEntity;
+import com.intern.chatproject.entities.TokenEntity;
 import com.intern.chatproject.repositories.jpa.EmployeeRepositoryJpa;
 import com.intern.chatproject.repositories.jpa.EmployeeRoleRepositoryJpa;
 import com.intern.chatproject.services.EmployeeService;
@@ -102,10 +103,11 @@ public class EmployeeServiceImpl implements EmployeeService {
         return entityOptional;
     }
 
-    public Object login(EmployeeEntityDto dto) {
+    public Object login(EmployeeEntityDto dto, TokenServiceImpl tokenService) {
         Optional<EmployeeEntityDto> dtoOptional = employeeRepositoryJpa.getEmployeeEntityDtoByUsernameAndPassword(dto.getUsername(), dto.getPassword());
         if(dtoOptional.isPresent()){
             dto = dtoOptional.get();
+            dto.setToken(tokenService.createToken(dto.getEmployeeId(), Constrants.TYPEACCOUNT.EMPLOYEE));
             dto.setRoleEntityDtoList(employeeRoleRepositoryJpa.getRoleEntityDtoOfEmployeeId(dto.getEmployeeId()));
             return dto;
         }

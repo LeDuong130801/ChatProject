@@ -37,6 +37,13 @@ public class Constrants {
         Short FACEBOOK = 2;
         Short GUEST = 3;
     }
+    public interface MESSAGE_ERROR{
+        String noPermission = "Your account can't use this API";
+        String tokenExpired = "Your token has expired";
+        String usernameOrPasswordIncorrect = "Username or password incorrect";
+        String phoneNumberHasUsed = "Phonenumber has used";
+        String emailHasUsed = "Email has used";
+    }
     public static final Long validSession = 600000L;// 10 min
     public static final Long oneDayMilis = 86400000L;
     public static final Long basicTokenValid = 2592000000L;

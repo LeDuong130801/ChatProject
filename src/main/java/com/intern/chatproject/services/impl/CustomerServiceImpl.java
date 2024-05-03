@@ -5,7 +5,6 @@ import com.intern.chatproject.entities.ChatBoxEntity;
 import com.intern.chatproject.entities.CustomerEntity;
 import com.intern.chatproject.entities.GoogleUserInfo;
 import com.intern.chatproject.repositories.jpa.ChatBoxRepositoryJpa;
-import com.intern.chatproject.repositories.jpa.CodeRepositoryJpa;
 import com.intern.chatproject.repositories.jpa.CustomerRepositoryJpa;
 import com.intern.chatproject.services.CustomerService;
 import com.intern.chatproject.utils.Constrants;
@@ -27,11 +26,8 @@ public class CustomerServiceImpl implements CustomerService {
     @Autowired
     ChatBoxRepositoryJpa chatBoxRepositoryJpa;
 
-    @Autowired
-    CodeRepositoryJpa codeRepositoryJpa;
-
     @Override
-    public Object create(CustomerEntityDto dto) {
+    public Object create(CustomerEntityDto dto, TokenServiceImpl tokenService) {
         String customerId = UUID.randomUUID().toString();
         CustomerEntity entity;
         while (customerRepositoryJpa.existsCustomerEntityByCustomerId(customerId)) {
@@ -41,6 +37,9 @@ public class CustomerServiceImpl implements CustomerService {
             dto.setSource(Constrants.SOURCE.NO_SOURCE);
         }
         if (dto.getSource().equals(Constrants.SOURCE.NO_SOURCE)){
+            if (customerRepositoryJpa.existsCustomerEntityByPhoneNumber(dto.getPhoneNumber())){
+                return CustomException.error(-1, Constrants.MESSAGE_ERROR.phoneNumberHasUsed);
+            }
             entity = CustomerEntity.builder()
                     .customerId(customerId)
                     .customerName(dto.getCustomerName() == null? "Guest "+customerId : dto.getCustomerName())
@@ -52,6 +51,9 @@ public class CustomerServiceImpl implements CustomerService {
                     .build();
         }
         else{
+            if (customerRepositoryJpa.existsCustomerEntityByOauthKey(dto.getOauthKey())){
+                return CustomException.error(-1, Constrants.MESSAGE_ERROR.emailHasUsed);
+            }
             entity = CustomerEntity.builder()
                     .customerId(customerId)
                     .customerName(dto.getCustomerName())
@@ -62,7 +64,8 @@ public class CustomerServiceImpl implements CustomerService {
                     .oauthKey(dto.getOauthKey())
                     .build();
         }
-        CustomerEntity customerEntity = customerRepositoryJpa.save(entity);
+        customerRepositoryJpa.save(entity);
+        String token = tokenService.createToken(customerId, Constrants.TYPEACCOUNT.CUSTOMER);
         ChatBoxEntity chatBoxEntity = ChatBoxEntity.builder()
                 .chatBoxId(UUID.randomUUID().toString())
                 .chatBoxName(dto.getCustomerName())
@@ -71,7 +74,10 @@ public class CustomerServiceImpl implements CustomerService {
                 .websiteId(Util.websiteId())
                 .build();
         chatBoxRepositoryJpa.save(chatBoxEntity);
-        return customerEntity;
+        Optional<CustomerEntityDto> customerEntityDto = customerRepositoryJpa.getCustomerEntityDtoByCustomerAndIdSource(entity.getCustomerId(), entity.getSource());
+        CustomerEntityDto customerEntityDto1 = customerEntityDto.get();
+        customerEntityDto1.setToken(token);
+        return customerEntityDto1;
     }
 
     @Override
@@ -103,91 +109,53 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public Object login(CustomerEntityDto dto) {
+    public Object login(CustomerEntityDto dto, TokenServiceImpl tokenService) {
         if (dto.getSource() == null){
             dto.setSource(Constrants.SOURCE.NO_SOURCE);
         }
         if (dto.getSource().equals(Constrants.SOURCE.NO_SOURCE)){
-            Optional<?> entity = customerRepositoryJpa.getCustomerEntityByCustomerNameAndPhoneNumber(dto.getCustomerName(), dto.getPhoneNumber());
+            Optional<CustomerEntityDto> entity = customerRepositoryJpa.getCustomerEntityDtoByCustomerNameAndPhoneNumber(dto.getCustomerName(), dto.getPhoneNumber());
             if (entity.isPresent()){
-                return entity.get();
+                CustomerEntityDto customerEntityDto = entity.get();
+                customerEntityDto.setToken(tokenService.createToken(customerEntityDto.getCustomerId(), Constrants.TYPEACCOUNT.CUSTOMER));
+                return customerEntityDto;
             }
             else if (!customerRepositoryJpa.existsCustomerEntityByPhoneNumber(dto.getPhoneNumber())){
-                return create(dto);
+                return create(dto, tokenService);
             }
         }
         else
         {
-            Optional<?> entity = customerRepositoryJpa.getCustomerEntityByOauthKeyAndOauthTokenAndSource(dto.getOauthKey(), dto.getOauthToken(), dto.getSource());
-            if (entity.isPresent()) return entity.get();
+            Optional<CustomerEntityDto> customerEntityDtoOptional =  customerRepositoryJpa.getCustomerEntityDtoByOauthKeyAndOauthTokenAndSource(
+                dto.getOauthKey(),
+                dto.getOauthToken(),
+                Constrants.SOURCE.EMAIL);
+            if (customerEntityDtoOptional.isPresent()){
+                CustomerEntityDto customerEntityDto = customerEntityDtoOptional.get();
+                customerEntityDto.setToken(tokenService.createToken(customerEntityDto.getCustomerId(), Constrants.TYPEACCOUNT.CUSTOMER));
+                return customerEntityDto;
+            }
         }
-        return ResponseEntity.ok("Wrong! please input again");
+        return CustomException.error(-1, Constrants.MESSAGE_ERROR.phoneNumberHasUsed);
     }
     @Override
-    public Object login(GoogleUserInfo googleUserInfo) {
-        if (customerRepositoryJpa.existsCustomerEntityByOauthKey(googleUserInfo.getEmail())){
-            return customerRepositoryJpa.getCustomerEntityDtoByOauthKeyAndOauthTokenAndSource(
+    public Object login(GoogleUserInfo googleUserInfo, TokenServiceImpl tokenService) {
+        Optional<CustomerEntityDto> customerEntityDtoOptional =  customerRepositoryJpa.getCustomerEntityDtoByOauthKeyAndOauthTokenAndSource(
                     googleUserInfo.getEmail(),
                     googleUserInfo.getUserId(),
                     Constrants.SOURCE.EMAIL);
+        if (customerEntityDtoOptional.isPresent()){
+            CustomerEntityDto customerEntityDto = customerEntityDtoOptional.get();
+            customerEntityDto.setToken(tokenService.createToken(customerEntityDto.getCustomerId(), Constrants.TYPEACCOUNT.CUSTOMER));
+            return customerEntityDto;
         }
-        String entityId = UUID.randomUUID().toString();
-        while (customerRepositoryJpa.existsCustomerEntityByCustomerId(entityId)){
-            entityId = UUID.randomUUID().toString();
-        }
-        CustomerEntity entity = CustomerEntity.builder()
-                .customerId(entityId)
-                .customerName(googleUserInfo.getName().trim())
+        CustomerEntityDto dto = CustomerEntityDto.builder()
+                .source(Constrants.SOURCE.EMAIL)
+                .customerName(googleUserInfo.getName())
                 .oauthKey(googleUserInfo.getEmail())
                 .oauthToken(googleUserInfo.getUserId())
-                .phoneNumber("no")
-                .source(Constrants.SOURCE.EMAIL)
-                .isOnline(Constrants.STATUS.OFFLINE)
                 .build();
-        CustomerEntity result = customerRepositoryJpa.save(entity);
-        ChatBoxEntity chatBoxEntity = ChatBoxEntity.builder()
-                .chatBoxId(UUID.randomUUID().toString())
-                .chatBoxName(entity.getCustomerName().trim())
-                .customerId(entityId)
-                .employeeId(Util.employeeSaleId())
-                .websiteId(Util.websiteId())
-                .build();
-        chatBoxRepositoryJpa.save(chatBoxEntity);
-        return result;
-    }
-    public Object loginGuest(CustomerEntityDto dto){
-        if (dto.getSource().equals(Constrants.SOURCE.GUEST)){
-            Optional<CustomerEntityDto> entityDto = customerRepositoryJpa.getCustomerEntityDtoByCustomerAndIdSource(dto.getCustomerId(), Constrants.SOURCE.GUEST);
-            if (entityDto.isPresent()){
-                return entityDto.get();
-            }
-            else{
-                String entityId = UUID.randomUUID().toString();
-                while (customerRepositoryJpa.existsCustomerEntityByCustomerId(entityId)){
-                    entityId = UUID.randomUUID().toString();
-                }
-                CustomerEntity entity = CustomerEntity.builder()
-                        .customerId(entityId)
-                        .customerName(dto.getCustomerName() == null ? "GUEST"+entityId : dto.getCustomerName())
-                        .oauthKey("no")
-                        .oauthToken("no")
-                        .phoneNumber("no")
-                        .source(Constrants.SOURCE.NO_SOURCE)
-                        .isOnline(Constrants.STATUS.OFFLINE)
-                        .build();
-                CustomerEntity result = customerRepositoryJpa.save(entity);
-                ChatBoxEntity chatBoxEntity = ChatBoxEntity.builder()
-                        .chatBoxId(UUID.randomUUID().toString())
-                        .chatBoxName(entity.getCustomerName().trim())
-                        .customerId(entityId)
-                        .employeeId(Util.employeeSaleId())
-                        .websiteId(Util.websiteId())
-                        .build();
-                chatBoxRepositoryJpa.save(chatBoxEntity);
-                return result;
-            }
-        }
-        return login(dto);
+        return create(dto, tokenService);
     }
 
     @Override
