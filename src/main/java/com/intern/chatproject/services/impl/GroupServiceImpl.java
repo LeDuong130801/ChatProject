@@ -5,6 +5,7 @@ import com.intern.chatproject.entities.GroupEntity;
 import com.intern.chatproject.repositories.jpa.GroupRepositoryJpa;
 import com.intern.chatproject.services.GroupService;
 import com.intern.chatproject.utils.Constrants;
+import com.intern.chatproject.utils.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +23,7 @@ public class GroupServiceImpl implements GroupService {
                 .groupId(UUID.randomUUID().toString())
                 .groupName(dto.getGroupName())
                 .allowGuest(dto.getAllowGuest() == null ? Constrants.STATUS.INACTIVE : dto.getAllowGuest())
+                .employeeId(dto.getEmployeeId() == null ? Util.employeeSaleId() : dto.getEmployeeId())
                 .build();
         return groupRepositoryJpa.save(entity);
     }

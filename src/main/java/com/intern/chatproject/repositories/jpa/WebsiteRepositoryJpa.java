@@ -64,8 +64,7 @@ public interface WebsiteRepositoryJpa extends JpaRepository<WebsiteEntity, Strin
             "g.groupName) " +
             "from WebsiteEntity w " +
             "join GroupEntity g on w.groupId = g.groupId " +
-            "join ChatBoxEntity cb on cb.websiteId = w.websiteId " +
-            "where cb.employeeId = :employeeId")
+            "where g.employeeId = :employeeId")
     List<WebsiteEntityDto> getWebsiteEntityDtoListByEmployeeId(String employeeId);
 
 }

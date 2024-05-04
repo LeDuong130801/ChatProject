@@ -41,7 +41,7 @@ public class MessageServiceImpl implements MessageService {
                     .build();
             return messageRepositoryJpa.save(entity);
         } else if (dto.getMessageType().equals(Constrants.MESSAGE_TYPE.EMPLOYEE_SEND)
-                && chatBoxRepositoryJpa.existsChatBoxEntityByChatBoxIdAndEmployeeId(dto.getChatBoxId(), dto.getSenderId())) {
+                && chatBoxRepositoryJpa.existsChatBoxEntityByChatBoxId(dto.getChatBoxId())) {
             Long currentTime = System.currentTimeMillis();
             MessageEntity entity = MessageEntity.builder()
                     .chatBoxId(dto.getChatBoxId())

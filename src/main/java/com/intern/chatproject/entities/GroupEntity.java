@@ -21,8 +21,8 @@ public class GroupEntity {
     String groupId;
     @Column(name = "group_name")
     String groupName;
-//    @Column(name = "renter_id")
-//    String renterId;
     @Column(name = "allow_guest")
     Short allowGuest;
+    @Column(name = "employee_id")
+    String employeeId;
 }

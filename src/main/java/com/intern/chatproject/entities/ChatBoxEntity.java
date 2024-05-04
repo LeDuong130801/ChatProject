@@ -22,8 +22,6 @@ public class ChatBoxEntity {
     String chatBoxName;
     @Column(name = "customer_id")
     String customerId;
-    @Column(name = "employee_id")
-    String employeeId;
     @Column(name = "website_id")
     String websiteId;
 }

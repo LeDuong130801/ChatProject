@@ -70,7 +70,6 @@ public class CustomerServiceImpl implements CustomerService {
                 .chatBoxId(UUID.randomUUID().toString())
                 .chatBoxName(dto.getCustomerName())
                 .customerId(customerId)
-                .employeeId(Util.employeeSaleId())
                 .websiteId(Util.websiteId())
                 .build();
         chatBoxRepositoryJpa.save(chatBoxEntity);

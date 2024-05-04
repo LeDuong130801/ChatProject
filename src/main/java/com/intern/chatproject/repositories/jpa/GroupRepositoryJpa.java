@@ -14,7 +14,8 @@ public interface GroupRepositoryJpa extends JpaRepository<GroupEntity, String> {
     @Query("select new com.intern.chatproject.dto.GroupEntityDto(" +
             "g.groupId," +
             "g.groupName," +
-            "g.allowGuest" +
+            "g.allowGuest," +
+            "g.employeeId" +
             ") from GroupEntity g " +
             "where g.groupId = :groupId")
     Optional<GroupEntityDto> getGroupEntityDtoByGroupId(String groupId);

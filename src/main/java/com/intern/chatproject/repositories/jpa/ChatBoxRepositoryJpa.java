@@ -14,13 +14,12 @@ public interface ChatBoxRepositoryJpa extends JpaRepository<ChatBoxEntity, Strin
     boolean existsChatBoxEntityByChatBoxId(String chatBoxId);
     boolean existsChatBoxEntityByChatBoxIdAndCustomerId(String chatBoxId, String customerId);
     boolean existsChatBoxEntityByCustomerId(String customerId);
-    boolean existsChatBoxEntityByChatBoxIdAndEmployeeId(String chatBoxId, String employeeId);
 
     @Query("select new com.intern.chatproject.dto.ChatBoxEntityDto(" +
             "cb.chatBoxId," +
             "cb.chatBoxName," +
             "cb.customerId," +
-            "cb.employeeId," +
+            "g.employeeId," +
             "g.allowGuest," +
             "c.customerName," +
             "e.employeeName," +
@@ -29,11 +28,11 @@ public interface ChatBoxRepositoryJpa extends JpaRepository<ChatBoxEntity, Strin
             "g.groupId," +
             "g.groupName " +
             ") from ChatBoxEntity cb " +
-            "join EmployeeEntity e on cb.employeeId = e.employeeId " +
             "join CustomerEntity c on cb.customerId = c.customerId " +
             "join WebsiteEntity w on w.websiteId = cb.websiteId " +
             "join GroupEntity g on g.groupId = w.groupId " +
-            "where (:employee is null or cb.employeeId = :employeeId) " +
+            "join EmployeeEntity e on g.employeeId = e.employeeId " +
+            "where (:employee is null or g.employeeId = :employeeId) " +
             "and (:customerId is null or cb.customerId = :customerId) " +
             "and (:websiteId is null or w.websiteId = :websiteId) ")
     List<ChatBoxEntityDto> filterByEmployeeIdAndCustomerIdAndWebsiteId(String employeeId, String customerId, String websiteId);
@@ -42,53 +41,53 @@ public interface ChatBoxRepositoryJpa extends JpaRepository<ChatBoxEntity, Strin
             "cb.chatBoxId," +
             "cb.chatBoxName," +
             "cb.customerId," +
-            "cb.employeeId," +
+            "g.employeeId," +
             "g.allowGuest) " +
             "from ChatBoxEntity cb " +
-            "join EmployeeEntity e on cb.employeeId = e.employeeId " +
-            "join CustomerEntity ua on cb.customerId = ua.customerId " +
+            "join CustomerEntity c on cb.customerId = c.customerId " +
             "join WebsiteEntity w on w.websiteId = cb.websiteId " +
             "join GroupEntity g on g.groupId = w.groupId " +
-            "where cb.employeeId = :employeeId")
+            "join EmployeeEntity e on g.employeeId = e.employeeId " +
+            "where g.employeeId = :employeeId")
     List<ChatBoxEntityDto> getChatBoxEntityDtoByEmployeeId(String employeeId);
     @Query("select new com.intern.chatproject.dto.ChatBoxEntityDto(" +
             "cb.chatBoxId," +
             "cb.chatBoxName," +
             "cb.customerId," +
-            "cb.employeeId," +
+            "g.employeeId," +
             "g.allowGuest) " +
             "from ChatBoxEntity cb " +
-            "join EmployeeEntity e on cb.employeeId = e.employeeId " +
-            "join CustomerEntity ua on cb.customerId = ua.customerId " +
+            "join CustomerEntity c on cb.customerId = c.customerId " +
             "join WebsiteEntity w on w.websiteId = cb.websiteId " +
             "join GroupEntity g on g.groupId = w.groupId " +
+            "join EmployeeEntity e on g.employeeId = e.employeeId " +
             "where cb.chatBoxId = :chatBoxId")
     Optional<ChatBoxEntityDto> getChatBoxEntityDtoByChatBoxId(String chatBoxId);
     @Query("select new com.intern.chatproject.dto.ChatBoxEntityDto(" +
             "cb.chatBoxId," +
             "cb.chatBoxName," +
             "cb.customerId," +
-            "cb.employeeId," +
+            "g.employeeId," +
             "g.allowGuest) " +
             "from ChatBoxEntity cb " +
-            "join EmployeeEntity e on cb.employeeId = e.employeeId " +
-            "join CustomerEntity ua on cb.customerId = ua.customerId " +
+            "join CustomerEntity c on cb.customerId = c.customerId " +
             "join WebsiteEntity w on w.websiteId = cb.websiteId " +
             "join GroupEntity g on g.groupId = w.groupId " +
-            "where ua.customerId = :customerId")
+            "join EmployeeEntity e on g.employeeId = e.employeeId " +
+            "where c.customerId = :customerId")
     Optional<ChatBoxEntityDto> getChatBoxEntityDtoByCustomerId(String customerId);
     @Query("select new com.intern.chatproject.dto.ChatBoxEntityDto(" +
             "cb.chatBoxId," +
             "cb.chatBoxName," +
             "cb.customerId," +
-            "cb.employeeId," +
+            "g.employeeId," +
             "g.allowGuest) " +
             "from ChatBoxEntity cb " +
-            "join EmployeeEntity e on cb.employeeId = e.employeeId " +
-            "join CustomerEntity ua on cb.customerId = ua.customerId " +
+            "join CustomerEntity c on cb.customerId = c.customerId " +
             "join WebsiteEntity w on w.websiteId = cb.websiteId " +
             "join GroupEntity g on g.groupId = w.groupId " +
-            "where ua.customerId = :customerId " +
+            "join EmployeeEntity e on g.employeeId = e.employeeId " +
+            "where c.customerId = :customerId " +
             "and w.websiteName = :websiteName")
     Optional<ChatBoxEntityDto> getChatBoxEntityDtoByCustomerIdAndWebsiteName(String customerId, String websiteName);
 
@@ -96,22 +95,22 @@ public interface ChatBoxRepositoryJpa extends JpaRepository<ChatBoxEntity, Strin
             "cb.chatBoxId," +
             "cb.chatBoxName," +
             "cb.customerId," +
-            "cb.employeeId," +
+            "g.employeeId," +
             "g.allowGuest) " +
             "from ChatBoxEntity cb " +
-            "join EmployeeEntity e on cb.employeeId = e.employeeId " +
             "join CustomerEntity c on cb.customerId = c.customerId " +
             "join WebsiteEntity w on w.websiteId = cb.websiteId " +
             "join GroupEntity g on g.groupId = w.groupId " +
+            "join EmployeeEntity e on g.employeeId = e.employeeId " +
             "where (:customerName is null or c.customerName like %:customerName%) " +
             "and (:websiteId is null or w.websiteId = :websiteId) " +
-            "and (:employeeId is null or cb.employeeId = :employeeId)")
-    List<ChatBoxEntityDto> filterByCustomerNameAndWebsiteIdAndEmployeeId(String customerName, String websiteId, String employeeId);
+            "and (:employeeId is null or g.employeeId = :employeeId)")
+    List<ChatBoxEntityDto> filterByCustomerNameAndWebsiteId(String customerName, String websiteId, String employeeId);
     @Query("select new com.intern.chatproject.dto.ChatBoxEntityDto(" +
             "cb.chatBoxId," +
             "cb.chatBoxName," +
             "cb.customerId," +
-            "cb.employeeId," +
+            "g.employeeId," +
             "g.allowGuest," +
             "c.customerName," +
             "e.employeeName," +
@@ -120,19 +119,19 @@ public interface ChatBoxRepositoryJpa extends JpaRepository<ChatBoxEntity, Strin
             "g.groupId," +
             "g.groupName " +
             ") from ChatBoxEntity cb " +
-            "join EmployeeEntity e on cb.employeeId = e.employeeId " +
             "join CustomerEntity c on cb.customerId = c.customerId " +
             "join WebsiteEntity w on w.websiteId = cb.websiteId " +
             "join GroupEntity g on g.groupId = w.groupId " +
+            "join EmployeeEntity e on g.employeeId = e.employeeId " +
             "where (:websiteName is null or w.websiteName like %:websiteName%) " +
             "and (:websiteOrigin is null or w.websiteOrigin = :websiteOrigin) " +
-            "and (:employeeId is null or cb.employeeId = :employeeId)")
+            "and (:employeeId is null or g.employeeId = :employeeId)")
     List<ChatBoxEntityDto> filterByWebsiteOriginAndWebsiteNameAndEmployeeId(String websiteOrigin, String websiteName, String employeeId);
     @Query("select new com.intern.chatproject.dto.ChatBoxEntityDto(" +
             "cb.chatBoxId," +
             "cb.chatBoxName," +
             "cb.customerId," +
-            "cb.employeeId," +
+            "g.employeeId," +
             "g.allowGuest," +
             "c.customerName," +
             "e.employeeName," +
@@ -141,10 +140,10 @@ public interface ChatBoxRepositoryJpa extends JpaRepository<ChatBoxEntity, Strin
             "g.groupId," +
             "g.groupName " +
             ") from ChatBoxEntity cb " +
-            "join EmployeeEntity e on cb.employeeId = e.employeeId " +
             "join CustomerEntity c on cb.customerId = c.customerId " +
             "join WebsiteEntity w on w.websiteId = cb.websiteId " +
             "join GroupEntity g on g.groupId = w.groupId " +
+            "join EmployeeEntity e on g.employeeId = e.employeeId " +
             "where (:websiteName is null or w.websiteName like %:websiteName%) " +
             "and (:websiteOrigin is null or w.websiteOrigin = :websiteOrigin) " +
             "and (:customerId is null or cb.customerId = :customerId)")

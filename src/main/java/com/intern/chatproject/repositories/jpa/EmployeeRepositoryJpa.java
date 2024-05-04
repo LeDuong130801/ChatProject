@@ -76,8 +76,8 @@ public interface EmployeeRepositoryJpa extends JpaRepository<EmployeeEntity, Str
             "from EmployeeEntity e " +
             "join EmployeeRoleEntity er on e.employeeId = er.employeeId " +
             "join RoleEntity r on er.roleId = r.roleId " +
-            "join ChatBoxEntity cb on cb.employeeId = e.employeeId " +
-            "join WebsiteEntity w on w.websiteId = cb.websiteId " +
+            "join GroupEntity g on g.employeeId = e.employeeId " +
+            "join WebsiteEntity w on w.groupId = g.groupId " +
             "where e.status = 1 " +
             "and (:employeeName is null or e.employeeName like %:employeeName%) " +
             "and (:employeeId is null or e.employeeId like %:employeeId%) " +

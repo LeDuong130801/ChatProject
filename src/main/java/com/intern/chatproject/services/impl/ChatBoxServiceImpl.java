@@ -31,7 +31,6 @@ public class ChatBoxServiceImpl implements ChatBoxService {
                 .chatBoxId(UUID.randomUUID().toString())
                 .chatBoxName(customerId)
                 .customerId(customerId)
-                .employeeId(Util.employeeSaleId())
                 .build();
         return chatBoxRepositoryJpa.save(entity);
     }
@@ -45,7 +44,6 @@ public class ChatBoxServiceImpl implements ChatBoxService {
                 .chatBoxId(UUID.randomUUID().toString())
                 .chatBoxName(customerId)
                 .customerId(customerId)
-                .employeeId(Util.employeeSaleId())
                 .build();
         return chatBoxRepositoryJpa.save(entity);
     }
@@ -57,7 +55,6 @@ public class ChatBoxServiceImpl implements ChatBoxService {
                     .chatBoxId(UUID.randomUUID().toString())
                     .chatBoxName(dto.getCustomerName())
                     .customerId(dto.getChatBoxName())
-                    .employeeId(Util.employeeSaleId())
                     .build();
             return chatBoxRepositoryJpa.save(entity);
         }
