@@ -26,8 +26,12 @@ public class WebsiteController {
     Object get(@RequestParam(value = "website_id")String websiteId){
         return websiteService.getById(websiteId);
     }
-    @GetMapping(value = "/get-website-list")
+    @GetMapping(value = "/employee/get-website-list")
     Object getWebsiteListOfEmployee(@RequestParam(value = "employee_id")String employeeId){
         return websiteService.getWebsiteListOfEmployee(employeeId);
+    }
+    @GetMapping(value = "/admin/get-website-list")
+    Object getWebsiteList(){
+        return websiteService.getAllWebsiteList();
     }
 }

@@ -13,6 +13,7 @@ import java.util.Optional;
 public interface WebsiteRepositoryJpa extends JpaRepository<WebsiteEntity, String> {
     boolean existsWebsiteEntityByWebsiteId(String websiteId);
     boolean existsWebsiteEntityByWebsiteName(String websiteName);
+    boolean existsWebsiteEntityByWebsiteOrigin(String websiteOrigin);
     @Query("select distinct new com.intern.chatproject.dto.WebsiteEntityDto(" +
             "w.websiteId, " +
             "w.websiteName," +
@@ -50,6 +51,19 @@ public interface WebsiteRepositoryJpa extends JpaRepository<WebsiteEntity, Strin
             "g.groupName) " +
             "from WebsiteEntity w " +
             "join GroupEntity g on w.groupId = g.groupId " +
+            "where w.websiteOrigin = :websiteOrigin")
+    Optional<WebsiteEntityDto> getWebsiteEntityDtoByWebsiteOrigin(String websiteOrigin);
+    @Query("select distinct new com.intern.chatproject.dto.WebsiteEntityDto(" +
+            "w.websiteId, " +
+            "w.websiteName," +
+            "w.websiteKey, "+
+            "w.websiteOrigin," +
+            "w.showFrom," +
+            "w.groupId," +
+            "g.allowGuest," +
+            "g.groupName) " +
+            "from WebsiteEntity w " +
+            "join GroupEntity g on w.groupId = g.groupId " +
             "where w.groupId = :groupId")
     List<WebsiteEntityDto> getWebsiteEntityDtoByGroupId(String groupId);
 
@@ -66,5 +80,17 @@ public interface WebsiteRepositoryJpa extends JpaRepository<WebsiteEntity, Strin
             "join GroupEntity g on w.groupId = g.groupId " +
             "where g.employeeId = :employeeId")
     List<WebsiteEntityDto> getWebsiteEntityDtoListByEmployeeId(String employeeId);
+    @Query("select distinct new com.intern.chatproject.dto.WebsiteEntityDto(" +
+            "w.websiteId, " +
+            "w.websiteName," +
+            "w.websiteKey, "+
+            "w.websiteOrigin," +
+            "w.showFrom," +
+            "w.groupId," +
+            "g.allowGuest," +
+            "g.groupName) " +
+            "from WebsiteEntity w " +
+            "join GroupEntity g on w.groupId = g.groupId")
+    List<WebsiteEntityDto> getAllWebsiteEntityDtoList();
 
 }

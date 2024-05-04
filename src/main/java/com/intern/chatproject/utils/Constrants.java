@@ -43,6 +43,7 @@ public class Constrants {
         String usernameOrPasswordIncorrect = "Username or password incorrect";
         String phoneNumberHasUsed = "Phonenumber has used";
         String emailHasUsed = "Email has used";
+        String originNotAccept = "This origin not accept";
     }
     public static final Long validSession = 600000L;// 10 min
     public static final Long oneDayMilis = 86400000L;

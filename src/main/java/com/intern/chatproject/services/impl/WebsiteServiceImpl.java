@@ -46,4 +46,10 @@ public class WebsiteServiceImpl implements WebsiteService {
     public Object getWebsiteListOfEmployee(String employeeId){
         return websiteRepositoryJpa.getWebsiteEntityDtoListByEmployeeId(employeeId);
     }
+    public Object getAllWebsiteList(){
+        return websiteRepositoryJpa.getAllWebsiteEntityDtoList();
+    }
+    public boolean checkOrigin(String origin){
+        return websiteRepositoryJpa.existsWebsiteEntityByWebsiteOrigin(origin);
+    }
 }

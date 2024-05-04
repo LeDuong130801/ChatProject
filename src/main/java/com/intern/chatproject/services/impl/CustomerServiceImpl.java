@@ -6,9 +6,11 @@ import com.intern.chatproject.entities.CustomerEntity;
 import com.intern.chatproject.entities.GoogleUserInfo;
 import com.intern.chatproject.repositories.jpa.ChatBoxRepositoryJpa;
 import com.intern.chatproject.repositories.jpa.CustomerRepositoryJpa;
+import com.intern.chatproject.repositories.jpa.WebsiteRepositoryJpa;
 import com.intern.chatproject.services.CustomerService;
 import com.intern.chatproject.utils.Constrants;
 import com.intern.chatproject.utils.Util;
+import com.intern.chatproject.utils.exception.CustomErrorCode;
 import com.intern.chatproject.utils.exception.CustomException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -26,8 +28,13 @@ public class CustomerServiceImpl implements CustomerService {
     @Autowired
     ChatBoxRepositoryJpa chatBoxRepositoryJpa;
 
+    @Autowired
+    WebsiteRepositoryJpa websiteRepositoryJpa;
     @Override
-    public Object create(CustomerEntityDto dto, TokenServiceImpl tokenService) {
+    public Object create(CustomerEntityDto dto, String websiteOrigin, TokenServiceImpl tokenService) {
+        if (!websiteRepositoryJpa.existsWebsiteEntityByWebsiteOrigin(websiteOrigin)){
+            return new CustomErrorCode(-1, Constrants.MESSAGE_ERROR.originNotAccept);
+        }
         String customerId = UUID.randomUUID().toString();
         CustomerEntity entity;
         while (customerRepositoryJpa.existsCustomerEntityByCustomerId(customerId)) {
@@ -108,7 +115,10 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public Object login(CustomerEntityDto dto, TokenServiceImpl tokenService) {
+    public Object login(CustomerEntityDto dto, String websiteOrigin, TokenServiceImpl tokenService) {
+        if (!websiteRepositoryJpa.existsWebsiteEntityByWebsiteOrigin(websiteOrigin)){
+            return new CustomErrorCode(-1, Constrants.MESSAGE_ERROR.originNotAccept);
+        }
         if (dto.getSource() == null){
             dto.setSource(Constrants.SOURCE.NO_SOURCE);
         }
@@ -120,7 +130,7 @@ public class CustomerServiceImpl implements CustomerService {
                 return customerEntityDto;
             }
             else if (!customerRepositoryJpa.existsCustomerEntityByPhoneNumber(dto.getPhoneNumber())){
-                return create(dto, tokenService);
+                return create(dto, websiteOrigin, tokenService);
             }
         }
         else
@@ -138,7 +148,10 @@ public class CustomerServiceImpl implements CustomerService {
         return CustomException.error(-1, Constrants.MESSAGE_ERROR.phoneNumberHasUsed);
     }
     @Override
-    public Object login(GoogleUserInfo googleUserInfo, TokenServiceImpl tokenService) {
+    public Object login(GoogleUserInfo googleUserInfo, String websiteOrigin, TokenServiceImpl tokenService) {
+        if (!websiteRepositoryJpa.existsWebsiteEntityByWebsiteOrigin(websiteOrigin)){
+            return new CustomErrorCode(-1, Constrants.MESSAGE_ERROR.originNotAccept);
+        }
         Optional<CustomerEntityDto> customerEntityDtoOptional =  customerRepositoryJpa.getCustomerEntityDtoByOauthKeyAndOauthTokenAndSource(
                     googleUserInfo.getEmail(),
                     googleUserInfo.getUserId(),
@@ -154,7 +167,7 @@ public class CustomerServiceImpl implements CustomerService {
                 .oauthKey(googleUserInfo.getEmail())
                 .oauthToken(googleUserInfo.getUserId())
                 .build();
-        return create(dto, tokenService);
+        return create(dto, websiteOrigin, tokenService);
     }
 
     @Override

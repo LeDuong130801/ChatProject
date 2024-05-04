@@ -5,6 +5,7 @@ import com.intern.chatproject.dto.CustomerEntityDto;
 import com.intern.chatproject.entities.GoogleUserInfo;
 import com.intern.chatproject.services.impl.CustomerServiceImpl;
 import com.intern.chatproject.services.impl.TokenServiceImpl;
+import com.intern.chatproject.services.impl.WebsiteServiceImpl;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -22,17 +23,18 @@ public class CustomerController {
     @Autowired
     TokenServiceImpl tokenService;
 
+
     @PostMapping("/login-process")
     public Object loginProcess(@RequestBody CustomerEntityDto dto, HttpServletRequest httpServlet){
-        String origin = httpServlet.getRemoteHost()+httpServlet.getServerPort();
-        log.info(origin);
-        return customerService.login(dto, tokenService);
+        String origin = httpServlet.getHeader("origin");
+
+        return customerService.login(dto, origin, tokenService);
     }
 
-    @PostMapping("/sign-up-process")
-    public Object signUpProcess(@RequestBody CustomerEntityDto dto){
-        return customerService.create(dto, tokenService);
-    }
+//    @PostMapping("/sign-up-process")
+//    public Object signUpProcess(@RequestBody CustomerEntityDto dto){
+//        return customerService.create(dto, tokenService);
+//    }
 
     @PutMapping("/change-password-process")
     public Object changePasswordProcess(@RequestBody CustomerEntityDto dto){
@@ -48,8 +50,9 @@ public class CustomerController {
         return customerService.forgotPassword(dto);
     }
     @PostMapping(value = "/logingoogle")
-    public Object loginGoogle(@RequestBody GoogleUserInfo userInfo){
-        return customerService.login(userInfo, tokenService);
+    public Object loginGoogle(@RequestBody GoogleUserInfo userInfo, HttpServletRequest httpServlet){
+        String origin = httpServlet.getHeader("origin");
+        return customerService.login(userInfo, origin, tokenService);
     }
 
 }
