@@ -18,6 +18,8 @@ public class WebsiteEntity{
     String websiteId;
     @Column(name = "website_name")
     String websiteName;
+    @Column(name = "website_origin")
+    String websiteOrigin;
     @Column(name = "website_key")
     String websiteKey;
     @Column(name = "show_from")

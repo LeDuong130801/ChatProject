@@ -43,4 +43,7 @@ public class WebsiteServiceImpl implements WebsiteService {
     public Object getByWebsiteName(String websiteName){
         return websiteRepositoryJpa.getWebsiteEntityDtoByWebsiteName(websiteName);
     }
+    public Object getWebsiteListOfEmployee(String employeeId){
+        return websiteRepositoryJpa.getWebsiteEntityDtoListByEmployeeId(employeeId);
+    }
 }

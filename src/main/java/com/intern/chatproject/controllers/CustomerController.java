@@ -5,6 +5,8 @@ import com.intern.chatproject.dto.CustomerEntityDto;
 import com.intern.chatproject.entities.GoogleUserInfo;
 import com.intern.chatproject.services.impl.CustomerServiceImpl;
 import com.intern.chatproject.services.impl.TokenServiceImpl;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +23,9 @@ public class CustomerController {
     TokenServiceImpl tokenService;
 
     @PostMapping("/login-process")
-    public Object loginProcess(@RequestBody CustomerEntityDto dto){
+    public Object loginProcess(@RequestBody CustomerEntityDto dto, HttpServletRequest httpServlet){
+        String origin = httpServlet.getRemoteHost()+httpServlet.getServerPort();
+        log.info(origin);
         return customerService.login(dto, tokenService);
     }
 

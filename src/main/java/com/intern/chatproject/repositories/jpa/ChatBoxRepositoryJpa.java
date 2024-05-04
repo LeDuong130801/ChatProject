@@ -125,9 +125,10 @@ public interface ChatBoxRepositoryJpa extends JpaRepository<ChatBoxEntity, Strin
             "join WebsiteEntity w on w.websiteId = cb.websiteId " +
             "join GroupEntity g on g.groupId = w.groupId " +
             "where (:websiteName is null or w.websiteName like %:websiteName%) " +
-            "and (:websiteId is null or w.websiteId = :websiteId) " +
+            "and (:websiteOrigin is null or w.websiteOrigin = :websiteOrigin) " +
             "and (:employeeId is null or cb.employeeId = :employeeId)")
-    List<ChatBoxEntityDto> filterByWebsiteIdAndWebsiteNameAndEmployeeId(String websiteId, String websiteName, String employeeId);    @Query("select new com.intern.chatproject.dto.ChatBoxEntityDto(" +
+    List<ChatBoxEntityDto> filterByWebsiteOriginAndWebsiteNameAndEmployeeId(String websiteOrigin, String websiteName, String employeeId);
+    @Query("select new com.intern.chatproject.dto.ChatBoxEntityDto(" +
             "cb.chatBoxId," +
             "cb.chatBoxName," +
             "cb.customerId," +
@@ -145,7 +146,7 @@ public interface ChatBoxRepositoryJpa extends JpaRepository<ChatBoxEntity, Strin
             "join WebsiteEntity w on w.websiteId = cb.websiteId " +
             "join GroupEntity g on g.groupId = w.groupId " +
             "where (:websiteName is null or w.websiteName like %:websiteName%) " +
-            "and (:websiteId is null or w.websiteId = :websiteId) " +
+            "and (:websiteOrigin is null or w.websiteOrigin = :websiteOrigin) " +
             "and (:customerId is null or cb.customerId = :customerId)")
-    List<ChatBoxEntityDto> filterByWebsiteIdAndWebsiteNameAndCustomerId(String websiteId, String websiteName, String customerId);
+    List<ChatBoxEntityDto> filterByWebsiteOriginAndWebsiteNameAndCustomerId(String websiteOrigin, String websiteName, String customerId);
 }

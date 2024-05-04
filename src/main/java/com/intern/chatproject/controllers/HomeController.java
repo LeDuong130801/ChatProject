@@ -4,6 +4,7 @@ import com.google.api.client.http.HttpTransport;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.intern.chatproject.services.impl.TokenServiceImpl;
 import com.intern.chatproject.utils.Constrants;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -55,5 +56,11 @@ public class HomeController {
             return ResponseEntity.ok(o);
         }
         return ResponseEntity.ok("bad");
+    }
+    @GetMapping("/test-hostname")
+    public ResponseEntity<?> ooo(@RequestParam(value = "j")String j, HttpServletRequest httpServlet) {
+        String origin = httpServlet.getHeader("origin");
+        log.info(origin);
+        return ResponseEntity.ok(j);
     }
 }

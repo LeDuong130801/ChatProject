@@ -12,16 +12,18 @@ public class WebsiteEntityDto {
     String websiteId;
     String websiteName;
     String websiteKey;
+    String websiteOrigin;
     Long showFrom;
     String groupId;
     Short allowGuest;
 
     String groupName;
 
-    public WebsiteEntityDto(String websiteId, String websiteName, String websiteKey, String groupId, Short allowGuest) {
+    public WebsiteEntityDto(String websiteId, String websiteName, String websiteKey, String websiteOrigin, String groupId, Short allowGuest) {
         this.websiteId = websiteId;
         this.websiteName = websiteName;
         this.websiteKey = websiteKey;
+        this.websiteOrigin = websiteOrigin;
         this.groupId = groupId;
         this.allowGuest = allowGuest;
     }

@@ -19,24 +19,23 @@ public class ChatBoxController {
         return chatBoxService.create(userAccountId);
     }
     @PostMapping("/customer/get")
-        //truyen them websiteid???
     Object getChatBoxOfCustomer(@RequestBody ChatBoxEntityDto dto){
         return chatBoxService.getChatBoxOfCustomer(dto.getCustomerId());
     }
     @GetMapping("/customer/get")
     Object getChatBoxDtoDetailOfEmployee(
-            @RequestParam(value = "website_id", required = false)String websiteId,
+            @RequestParam(value = "website_origin", required = false)String websiteOrigin,
             @RequestParam(value = "website_name", required = false)String websiteName,
             @RequestParam(value = "customer_id")String customerId){
-        return chatBoxService.getChatBoxDetailOfCustomer(websiteId, websiteName, customerId);
+        return chatBoxService.getChatBoxDetailOfCustomer(websiteOrigin, websiteName, customerId);
     }
     @GetMapping("/employee/get")
     Object getChatBoxDtoDetailOfCustomer(
-            @RequestParam(value = "website_id", required = false)String websiteId,
+            @RequestParam(value = "website_origin", required = false)String websiteOrigin,
             @RequestParam(value = "website_name", required = false)String websiteName,
             @RequestParam(value = "employee_id")String employeeId
             ){
-        return chatBoxService.getAllChatBoxDetailOfEmployee(websiteId, websiteName, employeeId);
+        return chatBoxService.getAllChatBoxDetailOfEmployee(websiteOrigin, websiteName, employeeId);
     }
     @PostMapping("/employee/get")
     Object getChatBoxOfEmployee(@RequestBody ChatBoxEntityDto dto){

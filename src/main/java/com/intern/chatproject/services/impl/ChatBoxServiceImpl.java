@@ -11,7 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
+
 @Service
 public class ChatBoxServiceImpl implements ChatBoxService {
 
@@ -22,8 +24,22 @@ public class ChatBoxServiceImpl implements ChatBoxService {
 
     @Override
     public Object create(String customerId) {
-        if (chatBoxRepositoryJpa.existsChatBoxEntityByCustomerId(customerId)){
+        if (chatBoxRepositoryJpa.existsChatBoxEntityByCustomerId(customerId)) {
             return chatBoxRepositoryJpa.getChatBoxEntityDtoByCustomerId(customerId);
+        }
+        ChatBoxEntity entity = ChatBoxEntity.builder()
+                .chatBoxId(UUID.randomUUID().toString())
+                .chatBoxName(customerId)
+                .customerId(customerId)
+                .employeeId(Util.employeeSaleId())
+                .build();
+        return chatBoxRepositoryJpa.save(entity);
+    }
+
+    public Object create(String customerId, String websiteName) {
+        Optional<ChatBoxEntityDto> chatBoxEntityDto = chatBoxRepositoryJpa.getChatBoxEntityDtoByCustomerIdAndWebsiteName(customerId, websiteName);
+        if (chatBoxEntityDto.isPresent()){
+            return chatBoxEntityDto.get();
         }
         ChatBoxEntity entity = ChatBoxEntity.builder()
                 .chatBoxId(UUID.randomUUID().toString())
@@ -36,7 +52,7 @@ public class ChatBoxServiceImpl implements ChatBoxService {
 
     @Override
     public Object edit(ChatBoxEntityDto dto) {
-        if (chatBoxRepositoryJpa.existsChatBoxEntityByChatBoxId(dto.getChatBoxId())){
+        if (chatBoxRepositoryJpa.existsChatBoxEntityByChatBoxId(dto.getChatBoxId())) {
             ChatBoxEntity entity = ChatBoxEntity.builder()
                     .chatBoxId(UUID.randomUUID().toString())
                     .chatBoxName(dto.getCustomerName())
@@ -45,28 +61,32 @@ public class ChatBoxServiceImpl implements ChatBoxService {
                     .build();
             return chatBoxRepositoryJpa.save(entity);
         }
-        throw new CustomException("No chat box id: "+dto.getChatBoxId());
+        throw new CustomException("No chat box id: " + dto.getChatBoxId());
     }
-    public Object getChatBoxOfCustomer(String customerId){
+
+    public Object getChatBoxOfCustomer(String customerId) {
         return chatBoxRepositoryJpa.getChatBoxEntityDtoByCustomerId(customerId);
     }
-    public Object getChatBoxOfEmployee(String employeeId){
+
+    public Object getChatBoxOfEmployee(String employeeId) {
         return chatBoxRepositoryJpa.getChatBoxEntityDtoByEmployeeId(employeeId);
     }
 
-    public Object filterByEmployeeIdAndCustomerIdAndWebsiteId(String employeeId, String customerId, String websiteId){
+    public Object filterByEmployeeIdAndCustomerIdAndWebsiteId(String employeeId, String customerId, String websiteId) {
         return chatBoxRepositoryJpa.filterByEmployeeIdAndCustomerIdAndWebsiteId(employeeId, customerId, websiteId);
     }
-    public Object getAllChatBoxDetailOfEmployee(String websiteId, String websiteName, String employeeId){
-        List<ChatBoxEntityDto> chatBoxEntityDtoList = chatBoxRepositoryJpa.filterByWebsiteIdAndWebsiteNameAndEmployeeId(websiteId, websiteName, employeeId);
-        for (ChatBoxEntityDto chatBoxEntityDto : chatBoxEntityDtoList){
+
+    public Object getAllChatBoxDetailOfEmployee(String websiteOrigin, String websiteName, String employeeId) {
+        List<ChatBoxEntityDto> chatBoxEntityDtoList = chatBoxRepositoryJpa.filterByWebsiteOriginAndWebsiteNameAndEmployeeId(websiteOrigin, websiteName, employeeId);
+        for (ChatBoxEntityDto chatBoxEntityDto : chatBoxEntityDtoList) {
             chatBoxEntityDto.setMessageList(messageRepositoryJpa.getMessageEntityDtoByChatBoxId(chatBoxEntityDto.getChatBoxId()));
         }
         return chatBoxEntityDtoList;
     }
-    public Object getChatBoxDetailOfCustomer(String websiteId, String websiteName, String customerId){
-        List<ChatBoxEntityDto> chatBoxEntityDtoList = chatBoxRepositoryJpa.filterByWebsiteIdAndWebsiteNameAndCustomerId(websiteId, websiteName, customerId);
-        for (ChatBoxEntityDto chatBoxEntityDto : chatBoxEntityDtoList){
+
+    public Object getChatBoxDetailOfCustomer(String websiteId, String websiteName, String customerId) {
+        List<ChatBoxEntityDto> chatBoxEntityDtoList = chatBoxRepositoryJpa.filterByWebsiteOriginAndWebsiteNameAndCustomerId(websiteId, websiteName, customerId);
+        for (ChatBoxEntityDto chatBoxEntityDto : chatBoxEntityDtoList) {
             chatBoxEntityDto.setMessageList(messageRepositoryJpa.getMessageEntityDtoByChatBoxId(chatBoxEntityDto.getChatBoxId()));
         }
         return chatBoxEntityDtoList;
