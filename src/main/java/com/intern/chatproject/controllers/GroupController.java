@@ -20,5 +20,8 @@ public class GroupController {
     @GetMapping(value = "/get")
     Object get(@RequestParam(value = "group_id") String groupId){
         return groupService.getById(groupId);
+    }@GetMapping(value = "/getall")
+    Object getall(){
+        return groupService.getAll();
     }
 }
